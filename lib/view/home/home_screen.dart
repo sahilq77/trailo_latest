@@ -13,6 +13,7 @@ import '../../controller/global_controller/division/divsion_controller.dart';
 import '../../controller/global_controller/transport/transport_controller.dart';
 import '../../utility/app_colors.dart';
 import '../../utility/app_utility.dart';
+import '../sidebar/app_sidebar_for_sales.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -455,6 +456,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    print("USER TYPE ${AppUtility.userType}");
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -468,176 +470,233 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 2,
         backgroundColor: AppColors.primary,
       ),
-      drawer: const AppSidebar(),
-      body: AppUtility.hasPrivilege('dashboard')
-          ? RefreshIndicator(
-              onRefresh: _refreshData,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Obx(
-                    () => controller.isLoading.value
-                        ? _buildShimmerGrid(screenWidth)
-                        : controller.dashboard.isEmpty
-                        ? NoDataScreen()
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _sectionTitle("Outward Analysis"),
-                              Divider(),
-                              SizedBox(height: screenHeight * 0.01),
-                              GridView.count(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                crossAxisCount: 2,
-                                crossAxisSpacing: screenWidth * 0.04,
-                                mainAxisSpacing: screenWidth * 0.04,
-                                childAspectRatio: 1.1,
-                                children: [
-                                  _buildGridItem(
-                                    'No of Invoices',
-                                    controller.dashboard.first.noOfInvoice,
-                                    () {},
-                                    const Color(0xFFfd7e14),
-                                    FontAwesomeIcons.fileInvoice,
-                                  ),
-                                  _buildGridItem(
-                                    'No of Dispatches',
-                                    controller.dashboard.first.noOfDispatch,
-                                    () {},
-                                    const Color(0xFF6c757d),
-                                    FontAwesomeIcons.truck,
-                                  ),
-                                  _buildGridItem(
-                                    'No of Deliveries\nCompleted',
-                                    controller.dashboard.first.noOfCompleted,
-                                    () {},
-                                    const Color(0xFF664d03),
-                                    FontAwesomeIcons.solidCircleCheck,
-                                  ),
-                                  _buildGridItem(
-                                    'Pending Deliveries Overdue',
-                                    controller
-                                        .dashboard
-                                        .first
-                                        .noOfPendingOverdue,
-                                    () {},
-                                    const Color(0xFF58151c),
-                                    FontAwesomeIcons.warning,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: screenHeight * 0.03),
-                              _sectionTitle("Freight Analysis"),
-                              Divider(),
-                              SizedBox(height: screenHeight * 0.01),
-                              GridView.count(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                crossAxisCount: 2,
-                                crossAxisSpacing: screenWidth * 0.04,
-                                mainAxisSpacing: screenWidth * 0.04,
-                                childAspectRatio: 1.1,
-                                children: [
-                                  _buildGridItem(
-                                    'Amount Freight 1',
-                                    controller
-                                            .dashboard
-                                            .first
-                                            .sumOfFreightAmountOne
-                                            .isEmpty
-                                        ? "0"
-                                        : controller
-                                              .dashboard
-                                              .first
-                                              .sumOfFreightAmountOne
-                                              .toString(),
+      drawer: AppUtility.userType == "2" ? AppSidebarForSales() : AppSidebar(),
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: AppUtility.userType == "1"
+            ? AppUtility.hasPrivilege('dashboard')
+                  ? _previlagesDash(screenWidth, screenHeight)
+                  : Container()
+            : AppUtility.userType == "2"
+            ? _salesDash(screenWidth, screenHeight)
+            : Container(),
+      ),
+    );
+  }
 
-                                    () {},
-                                    const Color(0xFF055_db160),
-                                    FontAwesomeIcons.indianRupeeSign,
-                                  ),
-                                  _buildGridItem(
-                                    'Amount Freight 2',
-                                    controller
-                                            .dashboard
-                                            .first
-                                            .sumOfFreightAmountTwo
-                                            .isEmpty
-                                        ? "0"
-                                        : controller
-                                              .dashboard
-                                              .first
-                                              .sumOfFreightAmountTwo
-                                              .toString(),
-
-                                    () {},
-                                    Colors.red.shade400,
-                                    FontAwesomeIcons.solidCreditCard,
-                                  ),
-                                  _buildGridItem(
-                                    'Claim',
-                                    controller.dashboard.first.claim.toString(),
-                                    () {},
-                                    const Color(0xFF6a4a73),
-                                    FontAwesomeIcons.gavel,
-                                  ),
-                                  _buildGridItem(
-                                    'Unclaim',
-                                    controller.dashboard.first.unclaim
-                                        .toString(),
-                                    () {},
-                                    const Color(0xFFBA884F),
-                                    FontAwesomeIcons.circleExclamation,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: screenHeight * 0.03),
-                              _sectionTitle("Critical Operation Analysis"),
-                              Divider(),
-                              SizedBox(height: screenHeight * 0.01),
-                              GridView.count(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                crossAxisCount: 2,
-                                crossAxisSpacing: screenWidth * 0.04,
-                                mainAxisSpacing: screenWidth * 0.04,
-                                childAspectRatio: 1.1,
-                                children: [
-                                  _buildGridItem(
-                                    'Delay In Invoicing',
-                                    controller.dashboard.first.delayInInvoicing
-                                        .toString(),
-                                    () {},
-                                    const Color(0xFF807e6b),
-                                    FontAwesomeIcons.solidHourglassHalf,
-                                  ),
-                                  _buildGridItem(
-                                    'Delay In Dispatch',
-                                    controller.dashboard.first.delayInDispatch
-                                        .toString(),
-                                    () {},
-                                    const Color(0xFFcd74ac),
-                                    FontAwesomeIcons.solidClock,
-                                  ),
-                                  _buildGridItem(
-                                    'Delay In Delivery',
-                                    controller.dashboard.first.delayInDelivery
-                                        .toString(),
-                                    () {},
-                                    const Color(0xFF4c7286),
-                                    FontAwesomeIcons.userSlash,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                  ),
+  Widget _salesDash(double screenWidth, double screenHeight) {
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Obx(
+          () => controller.isLoading.value
+              ? _buildShimmerGrid(screenWidth)
+              : controller.dashboard.isEmpty
+              ? NoDataScreen()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _sectionTitle("Outward Analysis"),
+                    Divider(),
+                    SizedBox(height: screenHeight * 0.01),
+                    GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: screenWidth * 0.04,
+                      mainAxisSpacing: screenWidth * 0.04,
+                      childAspectRatio: 1.1,
+                      children: [
+                        // _buildGridItem(
+                        //   'No of Invoices',
+                        //   controller.dashboard.first.noOfInvoice,
+                        //   () {},
+                        //   const Color(0xFFfd7e14),
+                        //   FontAwesomeIcons.fileInvoice,
+                        // ),
+                        _buildGridItem(
+                          'No of Dispatches',
+                          controller.dashboard.first.noOfDispatch,
+                          () {},
+                          const Color(0xFF6c757d),
+                          FontAwesomeIcons.truck,
+                        ),
+                        _buildGridItem(
+                          'No of Deliveries\nCompleted',
+                          controller.dashboard.first.noOfCompleted,
+                          () {},
+                          const Color(0xFF664d03),
+                          FontAwesomeIcons.solidCircleCheck,
+                        ),
+                        // _buildGridItem(
+                        //   'Pending Deliveries Overdue',
+                        //   controller.dashboard.first.noOfPendingOverdue,
+                        //   () {},
+                        //   const Color(0xFF58151c),
+                        //   FontAwesomeIcons.warning,
+                        // ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-            )
-          : Container(),
+        ),
+      ),
+    );
+  }
+
+  Widget _previlagesDash(double screenWidth, double screenHeight) {
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Obx(
+          () => controller.isLoading.value
+              ? _buildShimmerGrid(screenWidth)
+              : controller.dashboard.isEmpty
+              ? NoDataScreen()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _sectionTitle("Outward Analysis"),
+                    Divider(),
+                    SizedBox(height: screenHeight * 0.01),
+                    GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: screenWidth * 0.04,
+                      mainAxisSpacing: screenWidth * 0.04,
+                      childAspectRatio: 1.1,
+                      children: [
+                        _buildGridItem(
+                          'No of Invoices',
+                          controller.dashboard.first.noOfInvoice,
+                          () {},
+                          const Color(0xFFfd7e14),
+                          FontAwesomeIcons.fileInvoice,
+                        ),
+                        _buildGridItem(
+                          'No of Dispatches',
+                          controller.dashboard.first.noOfDispatch,
+                          () {},
+                          const Color(0xFF6c757d),
+                          FontAwesomeIcons.truck,
+                        ),
+                        _buildGridItem(
+                          'No of Deliveries\nCompleted',
+                          controller.dashboard.first.noOfCompleted,
+                          () {},
+                          const Color(0xFF664d03),
+                          FontAwesomeIcons.solidCircleCheck,
+                        ),
+                        _buildGridItem(
+                          'Pending Deliveries Overdue',
+                          controller.dashboard.first.noOfPendingOverdue,
+                          () {},
+                          const Color(0xFF58151c),
+                          FontAwesomeIcons.warning,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: screenHeight * 0.03),
+                    _sectionTitle("Freight Analysis"),
+                    Divider(),
+                    SizedBox(height: screenHeight * 0.01),
+                    GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: screenWidth * 0.04,
+                      mainAxisSpacing: screenWidth * 0.04,
+                      childAspectRatio: 1.1,
+                      children: [
+                        _buildGridItem(
+                          'Amount Freight 1',
+                          controller
+                                  .dashboard
+                                  .first
+                                  .sumOfFreightAmountOne
+                                  .isEmpty
+                              ? "0"
+                              : controller.dashboard.first.sumOfFreightAmountOne
+                                    .toString(),
+
+                          () {},
+                          const Color(0xFF055_db160),
+                          FontAwesomeIcons.indianRupeeSign,
+                        ),
+                        _buildGridItem(
+                          'Amount Freight 2',
+                          controller
+                                  .dashboard
+                                  .first
+                                  .sumOfFreightAmountTwo
+                                  .isEmpty
+                              ? "0"
+                              : controller.dashboard.first.sumOfFreightAmountTwo
+                                    .toString(),
+
+                          () {},
+                          Colors.red.shade400,
+                          FontAwesomeIcons.solidCreditCard,
+                        ),
+                        _buildGridItem(
+                          'Claim',
+                          controller.dashboard.first.claim.toString(),
+                          () {},
+                          const Color(0xFF6a4a73),
+                          FontAwesomeIcons.gavel,
+                        ),
+                        _buildGridItem(
+                          'Unclaim',
+                          controller.dashboard.first.unclaim.toString(),
+                          () {},
+                          const Color(0xFFBA884F),
+                          FontAwesomeIcons.circleExclamation,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: screenHeight * 0.03),
+                    _sectionTitle("Critical Operation Analysis"),
+                    Divider(),
+                    SizedBox(height: screenHeight * 0.01),
+                    GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      crossAxisSpacing: screenWidth * 0.04,
+                      mainAxisSpacing: screenWidth * 0.04,
+                      childAspectRatio: 1.1,
+                      children: [
+                        _buildGridItem(
+                          'Delay In Invoicing',
+                          controller.dashboard.first.delayInInvoicing
+                              .toString(),
+                          () {},
+                          const Color(0xFF807e6b),
+                          FontAwesomeIcons.solidHourglassHalf,
+                        ),
+                        _buildGridItem(
+                          'Delay In Dispatch',
+                          controller.dashboard.first.delayInDispatch.toString(),
+                          () {},
+                          const Color(0xFFcd74ac),
+                          FontAwesomeIcons.solidClock,
+                        ),
+                        _buildGridItem(
+                          'Delay In Delivery',
+                          controller.dashboard.first.delayInDelivery.toString(),
+                          () {},
+                          const Color(0xFF4c7286),
+                          FontAwesomeIcons.userSlash,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+        ),
+      ),
     );
   }
 

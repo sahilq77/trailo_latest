@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trailo/model/global_model/company/get_company_response.dart';
+import 'package:trailo/utility/app_utility.dart';
 import '../../../core/network/exceptions.dart';
 import '../../../core/network/networkcall.dart';
 import '../../../core/urls.dart';
@@ -37,12 +38,14 @@ class CompanyController extends GetxController {
     try {
       isLoading.value = true;
       errorMessage.value = '';
-      final jsonBody = {};
+      final jsonBody = {"employee_id": AppUtility.userID.toString()};
 
       List<GetCompanyResponse>? response =
           await Networkcall().postMethod(
                 Networkutility.getCompanyApi,
-                Networkutility.getCompany,
+                AppUtility.userType == "2"
+                    ? Networkutility.getCompanySales
+                    : Networkutility.getCompany,
                 jsonEncode(jsonBody),
                 context,
               )

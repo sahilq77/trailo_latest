@@ -8,7 +8,7 @@ class AppUtility {
   static String? userID;
   static String? fullName;
   static String? mobileNumber;
-  static String? userType;
+  static String? userType; //user_type=1for and  user_type=2 for sales employee
   static bool isLoggedIn = false;
   static bool isAdmin = false;
   static List<String> privileges = [];

@@ -9,6 +9,7 @@ import 'package:trailo/utility/app_routes.dart';
 import 'package:trailo/view/inward/inward_list.dart';
 import '../../controller/inward/inward_list_controller.dart';
 import '../../core/network/exceptions.dart';
+import '../../utility/app_utility.dart';
 
 class InwardDetailScreen extends StatefulWidget {
   const InwardDetailScreen({super.key});
@@ -319,94 +320,110 @@ class _InwardDetailScreenState extends State<InwardDetailScreen> {
                             // );
                           }
                         } catch (e) {
-                        //  Get.snackbar('Error', 'Failed to open Invoice Copy');
+                          //  Get.snackbar('Error', 'Failed to open Invoice Copy');
                         }
                       }),
                       _viewButton('Credit Note/ GRN Details', "View", () {
                         Get.toNamed(AppRoutes.viewNote, arguments: inward.id);
                       }),
                       SizedBox(height: 5),
-                      ElevatedButton.icon(
-                        onPressed: inward.isVerified == "1"
-                            ? null
-                            : () {
-                                Get.toNamed(
-                                  AppRoutes.inwardverification,
-                                  arguments: inward,
-                                );
-                              },
-                        icon: const Icon(Icons.check),
-                        label: const Text('Verification'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green.shade700,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                        ),
-                      ),
+                      AppUtility.userType == "1"
+                          ? ElevatedButton.icon(
+                              onPressed: inward.isVerified == "1"
+                                  ? null
+                                  : () {
+                                      Get.toNamed(
+                                        AppRoutes.inwardverification,
+                                        arguments: inward,
+                                      );
+                                    },
+                              icon: const Icon(Icons.check),
+                              label: const Text('Verification'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green.shade700,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
+                              ),
+                            )
+                          : SizedBox.shrink(),
                     ],
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () async {
-                            // Show confirmation dialog before deletion
-                            bool? confirmDelete =
-                                await _showDeleteConfirmationDialog(context);
-                            if (confirmDelete ?? false) {
-                              controller.deleteInward(
-                                id: inward.id,
-                                context: context,
-                              );
-                            }
-                          },
-                          icon: const Icon(Icons.delete),
-                          label: const Text('Delete'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red.shade700,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                AppUtility.userType == "1"
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
+                              child: ElevatedButton.icon(
+                                onPressed: () async {
+                                  // Show confirmation dialog before deletion
+                                  bool? confirmDelete =
+                                      await _showDeleteConfirmationDialog(
+                                        context,
+                                      );
+                                  if (confirmDelete ?? false) {
+                                    controller.deleteInward(
+                                      id: inward.id,
+                                      context: context,
+                                    );
+                                  }
+                                },
+                                icon: const Icon(Icons.delete),
+                                label: const Text('Delete'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red.shade700,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                ),
+                              ),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
-                        ),
-                      ),
-                    ),
 
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            Get.toNamed(
-                              AppRoutes.editInward,
-                              arguments: {
-                                'inward': inward,
-                                'srNo': 0, // Pass the serial number
-                              },
-                            );
-                          },
-                          icon: const Icon(Icons.edit),
-                          label: const Text('Edit'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                              ),
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  Get.toNamed(
+                                    AppRoutes.editInward,
+                                    arguments: {
+                                      'inward': inward,
+                                      'srNo': 0, // Pass the serial number
+                                    },
+                                  );
+                                },
+                                icon: const Icon(Icons.edit),
+                                label: const Text('Edit'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                ),
+                              ),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                        ],
+                      )
+                    : SizedBox.shrink(),
               ],
             );
           }),

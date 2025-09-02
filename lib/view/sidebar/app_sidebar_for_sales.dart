@@ -6,8 +6,8 @@ import '../../utility/app_colors.dart';
 import '../../utility/app_routes.dart';
 import '../../utility/app_utility.dart';
 
-class AppSidebar extends StatelessWidget {
-  const AppSidebar({super.key});
+class AppSidebarForSales extends StatelessWidget {
+  const AppSidebarForSales({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -84,26 +84,13 @@ class AppSidebar extends StatelessWidget {
                     leading: Icon(Icons.inventory),
                     children: [
                       SizedBox(
-                        child: AppUtility.hasPrivilege('add-inward')
-                            ? _buildSidebarItem(
-                                icon: Icons.add,
-                                title: 'Add Inward',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.addinward);
-                                },
-                              )
-                            : SizedBox.shrink(),
-                      ),
-                      SizedBox(
-                        child: AppUtility.hasPrivilege('inward-list')
-                            ? _buildSidebarItem(
-                                icon: Icons.list,
-                                title: 'Inward List',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.inwardlist);
-                                },
-                              )
-                            : SizedBox.shrink(),
+                        child: _buildSidebarItem(
+                          icon: Icons.list,
+                          title: 'Inward List',
+                          onTap: () {
+                            Get.toNamed(AppRoutes.inwardlist);
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -115,71 +102,13 @@ class AppSidebar extends StatelessWidget {
                     leading: Icon(Icons.inventory),
                     children: [
                       SizedBox(
-                        child: AppUtility.hasPrivilege('add-outward')
-                            ? _buildSidebarItem(
-                                icon: Icons.add,
-                                title: 'Add Outward',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.addoutward);
-                                },
-                              )
-                            : SizedBox.shrink(),
-                      ),
-                      SizedBox(
-                        child: AppUtility.hasPrivilege('outward-list')
-                            ? _buildSidebarItem(
-                                icon: Icons.list,
-                                title: 'Outward List',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.outwardList);
-                                },
-                              )
-                            : SizedBox.shrink(),
-                      ),
-                      SizedBox(
-                        child: AppUtility.hasPrivilege('picked-by-outward-list')
-                            ? _buildSidebarItem(
-                                icon: Icons.list,
-                                title: 'Picked By Outward List',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.pickedbyoutward);
-                                },
-                              )
-                            : SizedBox.shrink(),
-                      ),
-                      SizedBox(
-                        child:
-                            AppUtility.hasPrivilege('checked-by-outward-list')
-                            ? _buildSidebarItem(
-                                icon: Icons.list,
-                                title: 'Checked By Outward List',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.checkedbyoutward);
-                                },
-                              )
-                            : SizedBox.shrink(),
-                      ),
-                      SizedBox(
-                        child: AppUtility.hasPrivilege('packed-by-outward-list')
-                            ? _buildSidebarItem(
-                                icon: Icons.list,
-                                title: 'Packed By Outward List',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.packedbyoutward);
-                                },
-                              )
-                            : SizedBox.shrink(),
-                      ),
-                      SizedBox(
-                        child: AppUtility.hasPrivilege('order-completed-list')
-                            ? _buildSidebarItem(
-                                icon: Icons.list,
-                                title: 'Completed Order List',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.completedorderlist);
-                                },
-                              )
-                            : SizedBox.shrink(),
+                        child: _buildSidebarItem(
+                          icon: Icons.list,
+                          title: 'Completed Order List',
+                          onTap: () {
+                            Get.toNamed(AppRoutes.completedorderlist);
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -188,15 +117,13 @@ class AppSidebar extends StatelessWidget {
                     leading: Icon(Icons.file_copy),
                     children: [
                       SizedBox(
-                        child: AppUtility.hasPrivilege('pending-overdue-list')
-                            ? _buildSidebarItem(
-                                icon: Icons.format_list_bulleted_sharp,
-                                title: 'Pending Overdue List',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.pendingOverdue);
-                                },
-                              )
-                            : SizedBox.shrink(),
+                        child: _buildSidebarItem(
+                          icon: Icons.format_list_bulleted_sharp,
+                          title: 'Pending Overdue List',
+                          onTap: () {
+                            Get.toNamed(AppRoutes.pendingOverdue);
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -359,5 +286,3 @@ class AppSidebar extends StatelessWidget {
     );
   }
 }
-
-

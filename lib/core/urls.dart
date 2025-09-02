@@ -1,6 +1,6 @@
 class Networkutility {
   static String baseUrl =
-      "https://auditrail.in/"; // Live - https://auditrail.in/  and staging - https://seekhelp.in/trail-o/
+      "https://seekhelp.in/trail-o/"; // Live - https://auditrail.in/  and staging - https://seekhelp.in/trail-o/
   static String login = "${baseUrl + "employee-login"}";
   static int loginApi = 1;
   static String forgotPassword = "${baseUrl + "forgot-password"}";
@@ -80,4 +80,6 @@ class Networkutility {
   static String checkDebitNoteNumber =
       "${baseUrl + "check-unique-debit-note-number"}";
   static int checkDebitNoteNumberApi = 35;
+  static String getCompanySales =
+      "${baseUrl + "get-all-companies-of-sales-employee"}";
 }

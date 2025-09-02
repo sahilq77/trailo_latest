@@ -53,7 +53,8 @@ class LoginController extends GetxController {
           await AppUtility.setUserInfo(
             user!.employeeName,
             user.mobileNumber,
-            user.userType.toString(),
+            user.userType
+                .toString(), //user_type=1for and  user_type=2 for sales employee
             user.id.toString(),
             isAdmin,
             [], // Will be updated to ['dashboard'] by AppUtility
