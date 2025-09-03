@@ -1,6 +1,6 @@
 class Networkutility {
   static String baseUrl =
-      "https://seekhelp.in/trail-o/"; // Live - https://auditrail.in/  and staging - https://seekhelp.in/trail-o/
+      "https://auditrail.in/"; // Live - https://auditrail.in/  and staging - https://seekhelp.in/trail-o/
   static String login = "${baseUrl + "employee-login"}";
   static int loginApi = 1;
   static String forgotPassword = "${baseUrl + "forgot-password"}";

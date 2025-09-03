@@ -80,6 +80,7 @@ class CompletedOrderListController extends GetxController {
 
       final jsonBody = {
         "employee_id": AppUtility.userID,
+        "user_type": AppUtility.userType.toString(),
         "outward_id": "",
         "company_id": selectedCompanyId.value,
         "division_id": "",
