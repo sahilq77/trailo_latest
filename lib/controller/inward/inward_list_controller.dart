@@ -222,6 +222,7 @@ class InwardListController extends GetxController {
 
       final jsonBody = {
         "employee_id": AppUtility.userID,
+        "user_type": AppUtility.userType.toString(),
         "inward_id": id,
         "company_id": "",
         "division_id": "",

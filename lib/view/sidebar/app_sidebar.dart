@@ -76,38 +76,47 @@ class AppSidebar extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.only(top: 10),
                 children: <Widget>[
-                  ExpansionTile(
-                    title: Text(
-                      'Inward Management',
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    leading: Icon(Icons.inventory),
-                    children: [
-                      SizedBox(
-                        child: AppUtility.hasPrivilege('add-inward')
-                            ? _buildSidebarItem(
-                                icon: Icons.add,
-                                title: 'Add Inward',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.addinward);
-                                },
-                              )
-                            : SizedBox.shrink(),
-                      ),
-                      SizedBox(
-                        child: AppUtility.hasPrivilege('inward-list')
-                            ? _buildSidebarItem(
-                                icon: Icons.list,
-                                title: 'Inward List',
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.inwardlist);
-                                },
-                              )
-                            : SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
-                  ExpansionTile(
+                  AppUtility.hasPrivilege('add-inward') ||
+                          AppUtility.hasPrivilege('inward-list')
+                      ? ExpansionTile(
+                          title: Text(
+                            'Inward Management',
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          leading: Icon(Icons.inventory),
+                          children: [
+                            SizedBox(
+                              child: AppUtility.hasPrivilege('add-inward')
+                                  ? _buildSidebarItem(
+                                      icon: Icons.add,
+                                      title: 'Add Inward',
+                                      onTap: () {
+                                        Get.toNamed(AppRoutes.addinward);
+                                      },
+                                    )
+                                  : SizedBox.shrink(),
+                            ),
+                            SizedBox(
+                              child: AppUtility.hasPrivilege('inward-list')
+                                  ? _buildSidebarItem(
+                                      icon: Icons.list,
+                                      title: 'Inward List',
+                                      onTap: () {
+                                        Get.toNamed(AppRoutes.inwardlist);
+                                      },
+                                    )
+                                  : SizedBox.shrink(),
+                            ),
+                          ],
+                        )
+                      : SizedBox.shrink(),
+                   AppUtility.hasPrivilege('add-outward') ||
+                          AppUtility.hasPrivilege('outward-list') ||
+                          AppUtility.hasPrivilege('picked-by-outward-list') ||
+                          AppUtility.hasPrivilege('checked-by-outward-list') ||
+                          AppUtility.hasPrivilege('packed-by-outward-list') ||
+                          AppUtility.hasPrivilege('order-completed-list')
+                      ?  ExpansionTile(
                     title: Text(
                       'Outward Management',
                       style: TextStyle(fontSize: 13),
@@ -182,8 +191,9 @@ class AppSidebar extends StatelessWidget {
                             : SizedBox.shrink(),
                       ),
                     ],
-                  ),
-                  ExpansionTile(
+                  ): SizedBox.shrink(),
+                    AppUtility.hasPrivilege('pending-overdue-list')
+                      ?    ExpansionTile(
                     title: Text('Reports', style: TextStyle(fontSize: 13)),
                     leading: Icon(Icons.file_copy),
                     children: [
@@ -199,7 +209,7 @@ class AppSidebar extends StatelessWidget {
                             : SizedBox.shrink(),
                       ),
                     ],
-                  ),
+                  ):SizedBox.shrink(),
                   _buildSidebarItem(
                     icon: Icons.logout,
                     title: 'Log Out',
@@ -359,5 +369,3 @@ class AppSidebar extends StatelessWidget {
     );
   }
 }
-
-
