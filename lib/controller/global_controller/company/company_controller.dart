@@ -40,12 +40,20 @@ class CompanyController extends GetxController {
       errorMessage.value = '';
       final jsonBody = {"employee_id": AppUtility.userID.toString()};
 
+      // Determine the appropriate API endpoint based on user type
+      String apiEndpoint;
+      if (AppUtility.userType == "2") {
+        apiEndpoint = Networkutility.getCompanySales;
+      } else if (AppUtility.userType == "3") {
+        apiEndpoint = Networkutility.getCompanyCustomer;
+      } else {
+        apiEndpoint = Networkutility.getCompany;
+      }
+
       List<GetCompanyResponse>? response =
           await Networkcall().postMethod(
                 Networkutility.getCompanyApi,
-                AppUtility.userType == "2"
-                    ? Networkutility.getCompanySales
-                    : Networkutility.getCompany,
+                apiEndpoint,
                 jsonEncode(jsonBody),
                 context,
               )

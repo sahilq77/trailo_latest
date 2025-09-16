@@ -9,13 +9,13 @@ import 'package:trailo/controller/global_controller/division/divsion_controller.
 import 'package:trailo/controller/global_controller/transport/transport_controller.dart';
 import 'package:trailo/controller/global_controller/status/status_controller.dart';
 import 'package:trailo/controller/global_controller/vendor/vendor_controller.dart';
-import 'package:trailo/controller/global_controller/customers/customer_controller.dart';
 import 'package:trailo/controller/inward/add_inward/check_debit_note_number_controller.dart';
 import 'package:trailo/controller/inward/add_inward/check_inward_number_controller.dart';
 import 'package:trailo/controller/inward/add_inward/check_vendor_invoice_number_controller.dart';
 import 'package:trailo/utility/app_utility.dart';
 import 'package:trailo/utility/app_colors.dart';
 import '../../common/securetextinputformatter.dart';
+import '../../controller/global_controller/customers/customer_controller.dart';
 import '../../controller/inward/add_inward/check_invoice_number_controller.dart';
 
 class AddInwardScreen extends StatefulWidget {

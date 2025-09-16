@@ -60,6 +60,7 @@ class DashboardController extends GetxController {
 
       final jsonBody = {
         "employee_id": AppUtility.userID,
+        "user_type": AppUtility.userType.toString(),
         "company_id": selectedCompanyId.value,
         "division_id": selectedDivisionId.value,
         "transport_id": selectedTransportId.value,

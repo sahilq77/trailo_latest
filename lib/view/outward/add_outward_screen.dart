@@ -7,6 +7,7 @@ import 'package:trailo/controller/global_controller/sales_team/sales_team_employ
 import 'package:trailo/controller/inward/add_inward/check_invoice_number_controller.dart';
 import '../../common/securetextinputformatter.dart';
 import '../../controller/global_controller/customers/customer_controller.dart';
+
 import '../../controller/global_controller/company/company_controller.dart';
 import '../../controller/global_controller/division/divsion_controller.dart';
 import '../../controller/global_controller/status/status_controller.dart';

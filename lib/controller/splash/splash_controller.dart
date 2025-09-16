@@ -10,7 +10,6 @@ import '../../utility/app_colors.dart';
 import '../../utility/app_routes.dart';
 import '../../utility/app_utility.dart';
 
-
 class SplashController extends GetxController {
   @override
   void onInit() {
@@ -40,8 +39,8 @@ class SplashController extends GetxController {
       permissionsToRequest.add(Permission.photos);
     }
 
-    Map<Permission, PermissionStatus> statuses =
-        await permissionsToRequest.request();
+    Map<Permission, PermissionStatus> statuses = await permissionsToRequest
+        .request();
 
     // Check permission statuses
     bool cameraDenied = statuses[Permission.camera]!.isDenied;
@@ -112,10 +111,14 @@ class SplashController extends GetxController {
       await Future.delayed(const Duration(seconds: 1));
     }
 
-  //  Proceed with navigation after permission handling
+    //  Proceed with navigation after permission handling
     await Future.delayed(const Duration(seconds: 2));
     if (AppUtility.isLoggedIn) {
-      Get.offNamed(AppRoutes.home);
+      if (AppUtility.userType == "3") {
+        Get.offNamed(AppRoutes.customerHome);
+      } else {
+        Get.offNamed(AppRoutes.home);
+      }
     } else {
       Get.offNamed(AppRoutes.welcome);
     }

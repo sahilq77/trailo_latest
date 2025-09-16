@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trailo/controller/global_controller/company/company_controller.dart';
-import 'package:trailo/controller/global_controller/customers/customer_controller.dart';
 import 'package:trailo/controller/global_controller/division/divsion_controller.dart';
 import 'package:trailo/controller/global_controller/employee/employee_controller.dart';
 import 'package:trailo/controller/global_controller/sales_team/sales_team_employee_controller.dart';
@@ -11,6 +10,8 @@ import 'package:trailo/controller/global_controller/status/status_controller.dar
 import 'package:trailo/utility/app_colors.dart';
 import 'package:trailo/utility/app_routes.dart';
 import 'package:trailo/utility/customdesign/connctivityservice.dart';
+
+import 'controller/global_controller/customers/customer_controller.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // Initialize binding

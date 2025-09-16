@@ -16,6 +16,8 @@ import '../../model/add_inward/get_inward_number_respons.dart';
 import '../../model/checked_by_list/get_checked_by_list_response.dart';
 import '../../model/checked_by_list/get_packed_by_response.dart';
 import '../../model/completed_order/get_completed_order_list_response.dart';
+import '../../model/customer/change_pass/get_change_password_response.dart';
+import '../../model/customer/change_pass/get_verify_old_password_response.dart';
 import '../../model/customer/login/get_customer_login_response.dart';
 import '../../model/dashboard/get_dashboard_response.dart';
 import '../../model/global_model/company/get_company_response.dart';
@@ -198,6 +200,15 @@ class Networkcall {
           case 36:
             final getCustomerLogin = getCutsomerLoginResponseFromJson(str);
             return getCustomerLogin;
+
+          case 37:
+            final verifyOldPass = getVerifyOldPassResponseFromJson(str);
+            return verifyOldPass;
+
+          case 38:
+            final changePass = getChangeResponseFromJson(str);
+            return changePass;
+
           default:
             log("Invalid request code: $requestCode");
             throw ParseException('Unhandled request code: $requestCode');

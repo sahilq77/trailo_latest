@@ -28,6 +28,8 @@ import 'package:trailo/view/signup/signup_screen.dart';
 import 'package:trailo/view/view_pdf/view_pdf_screen.dart';
 import 'package:trailo/view/welcome/welcome_screen.dart';
 
+import '../view/customer_view/change_password/change_password_screen.dart';
+import '../view/customer_view/change_password/verify_old_password_screen.dart';
 import '../view/customer_view/home/customer_home_screen.dart';
 import '../view/forgot_password/enter_new_password_screen.dart';
 import '../view/forgot_password/forgot_password_screen.dart';
@@ -77,8 +79,10 @@ class AppRoutes {
   static const String editInward = '/edit_inward';
   //customer screens
   static const String customerLogin = '/customer_login';
- static const String customerHome = '/customer_home';
-  
+  static const String customerHome = '/customer_home';
+  static const String verifyOldPassword = '/verify_old_password';
+  static const String changePassword = '/change_password';
+
   static final routes = [
     GetPage(
       name: splash,
@@ -254,11 +258,20 @@ class AppRoutes {
       page: () => CustomerLoginScreen(),
       transition: Transition.fadeIn,
     ),
-  GetPage(
+    GetPage(
       name: customerHome,
       page: () => CustomerHomeScreen(),
       transition: Transition.fadeIn,
     ),
-    
+    GetPage(
+      name: verifyOldPassword,
+      page: () => VerifyOldPasswordScreen(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: changePassword,
+      page: () => ChangePasswordScreen(),
+      transition: Transition.fadeIn,
+    ),
   ];
 }

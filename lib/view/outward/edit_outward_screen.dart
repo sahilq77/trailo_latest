@@ -7,6 +7,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:trailo/controller/global_controller/sales_team/sales_team_employee_controller.dart';
 import 'package:trailo/model/outward_list/get_outward_list_response.dart';
 import '../../common/securetextinputformatter.dart';
+
 import '../../controller/global_controller/customers/customer_controller.dart';
 import '../../controller/inward/add_inward/check_invoice_number_controller.dart';
 import '../../controller/outward/add_outward/add_outward_controller.dart';
