@@ -163,6 +163,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
+                const SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed: () {
+                    Get.toNamed(AppRoutes.customerLogin);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    'Customer Login',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                ),
               ],
             ),
           ),

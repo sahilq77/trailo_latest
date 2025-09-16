@@ -6,6 +6,7 @@ import 'package:trailo/binding/outward/outward_list_binding.dart';
 import 'package:trailo/binding/outward/packed_by_outward_binding.dart';
 import 'package:trailo/binding/outward/picked_by_outward_binding.dart';
 import 'package:trailo/utility/customdesign/nointernetconnectionpage.dart';
+import 'package:trailo/view/customer_view/login/customer_login_screen.dart';
 import 'package:trailo/view/inward/add_inward_screen.dart';
 import 'package:trailo/view/inward/inward_detail_screen.dart';
 import 'package:trailo/view/inward/inward_list.dart';
@@ -27,6 +28,7 @@ import 'package:trailo/view/signup/signup_screen.dart';
 import 'package:trailo/view/view_pdf/view_pdf_screen.dart';
 import 'package:trailo/view/welcome/welcome_screen.dart';
 
+import '../view/customer_view/home/customer_home_screen.dart';
 import '../view/forgot_password/enter_new_password_screen.dart';
 import '../view/forgot_password/forgot_password_screen.dart';
 import '../view/home/home_screen.dart';
@@ -73,7 +75,10 @@ class AppRoutes {
   static const String pendingOverdue = '/pending_overdue';
   static const String overdueDetails = '/pending_overdue_details';
   static const String editInward = '/edit_inward';
-
+  //customer screens
+  static const String customerLogin = '/customer_login';
+ static const String customerHome = '/customer_home';
+  
   static final routes = [
     GetPage(
       name: splash,
@@ -208,11 +213,6 @@ class AppRoutes {
       transition: Transition.fadeIn,
     ),
 
-
-
-
-
-    
     GetPage(
       name: viewpdf,
       page: () => ViewResultScreen(),
@@ -248,5 +248,17 @@ class AppRoutes {
       page: () => EditInwardScreen(),
       transition: Transition.fadeIn,
     ),
+    //Customer screens
+    GetPage(
+      name: customerLogin,
+      page: () => CustomerLoginScreen(),
+      transition: Transition.fadeIn,
+    ),
+  GetPage(
+      name: customerHome,
+      page: () => CustomerHomeScreen(),
+      transition: Transition.fadeIn,
+    ),
+    
   ];
 }
