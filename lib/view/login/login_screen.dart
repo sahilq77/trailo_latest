@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 24),
                 const Text(
-                  'Login \nWelcome Back',
+                  'Employees Log In \nWelcome Back',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.topRight,
                   child: TextButton(
                     onPressed: () {
-                      Get.toNamed(AppRoutes.forgotpassword);
+                      Get.toNamed(AppRoutes.forgotpassword, arguments: false);
                     },
                     child: Text(
                       'Forgot Password?',
@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   child: const Text(
-                    'Login',
+                    'Log In',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),

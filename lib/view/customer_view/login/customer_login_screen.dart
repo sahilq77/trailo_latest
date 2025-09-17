@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../controller/customer/login/customer_login_controller.dart';
 import '../../../utility/app_colors.dart';
@@ -35,7 +36,7 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
       appBar: AppBar(
         title: Text(
           "Customer Login",
-          style: TextStyle(color: AppColors.textDark),
+          style: GoogleFonts.poppins(color: AppColors.textDark),
         ),
         backgroundColor: AppColors.background,
         automaticallyImplyLeading: true,
@@ -61,7 +62,7 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                 ),
                 const SizedBox(height: 24),
                 const Text(
-                  'Login \nWelcome Back',
+                  'Customers Log In \nWelcome Back',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -135,10 +136,10 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                   alignment: Alignment.topRight,
                   child: TextButton(
                     onPressed: () {
-                      Get.toNamed(AppRoutes.verifyOldPassword);
+                      Get.toNamed(AppRoutes.forgotpassword, arguments: true);
                     },
                     child: Text(
-                      'Change Password?',
+                      'Forgot Password?',
                       style: TextStyle(
                         fontSize: 13, // Increased for readability
                         color: AppColors.textDark,
@@ -168,7 +169,7 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                     ),
                   ),
                   child: const Text(
-                    'Login',
+                    'Log In',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),

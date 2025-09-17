@@ -79,7 +79,7 @@ class LoginController extends GetxController {
           }
           Get.snackbar(
             'Success',
-            'Login successful!',
+            'Log in successful!',
             backgroundColor: AppColors.success,
             colorText: Colors.white,
           );

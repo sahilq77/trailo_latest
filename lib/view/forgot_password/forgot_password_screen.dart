@@ -17,11 +17,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final controller = Get.put(ForgotPasswordController());
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
+  bool? isCutomer;
 
   @override
   void dispose() {
     _phoneController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final mob = Get.arguments as bool;
+    setState(() {
+      isCutomer = mob;
+    });
   }
 
   @override
@@ -55,9 +66,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Text(
-                'Forgot Password',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              Text(
+                isCutomer == true
+                    ? 'Customers Forgot Password'
+                    : 'Employees Forgot Password',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
