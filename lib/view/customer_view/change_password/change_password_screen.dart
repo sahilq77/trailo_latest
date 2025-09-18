@@ -147,6 +147,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Handle password reset logic
+                    print(mobile);
                     controller.changePassword(
                       mobile: mobile,
                       oldPassword: oldpass,

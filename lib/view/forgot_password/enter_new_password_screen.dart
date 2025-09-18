@@ -146,8 +146,9 @@ class _ForgotPasswordScreenState extends State<EnterNewPasswordScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // Handle password reset logic
+                    print(mobile);
                     controller.changePassword(
-                      mobile: mobile,
+                      mobile: mobile.toString(),
                       password: _passwordController.text.toString(),
                     );
                   }

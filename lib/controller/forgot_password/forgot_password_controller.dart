@@ -59,7 +59,9 @@ class ForgotPasswordController extends GetxController {
           );
           Get.toNamed(
             AppRoutes.newspassword,
-            arguments: user!.mobileNumber.toString(),
+            arguments: user!.mobileNumber.isNotEmpty
+                ? user!.mobileNumber.toString()
+                : user!.customerMobile.toString(),
           );
           // Get.offNamed('/dashboard');
         } else if (response[0].status == "false") {

@@ -62,6 +62,7 @@ class LoginData {
   String password;
   String userType;
   String loginType;
+  String customerMobile;
 
   LoginData({
     required this.id,
@@ -73,6 +74,7 @@ class LoginData {
     required this.password,
     required this.userType,
     required this.loginType,
+    required this.customerMobile,
   });
 
   factory LoginData.fromJson(Map<String, dynamic> json) => LoginData(
@@ -85,6 +87,7 @@ class LoginData {
     mobileNumber: json["mobile_number"]?.toString() ?? "",
     password: json["password"]?.toString() ?? "",
     loginType: json["login_type"]?.toString() ?? "",
+    customerMobile: json["mobile_number_1"]?.toString() ?? "",
   );
 
   Map<String, dynamic> toJson() => {

@@ -44,6 +44,7 @@ class VerifyOldPasswordController extends GetxController {
         List<GetVerifyOldPassResponse> response = List.from(list);
         // log(response[0].data.mobileNumber);
         if (response[0].status == "true") {
+      
           // final user = response[0]
           // log("userid${user.userid}");
           // await AppUtility.setUserInfo(
@@ -59,13 +60,13 @@ class VerifyOldPasswordController extends GetxController {
             backgroundColor: AppColors.success,
             colorText: Colors.white,
           );
-          Get.toNamed(
-            AppRoutes.changePassword,
-            arguments: {
-              "mobile": mobile.toString(),
-              "old_pass": oldpass.toString(),
-            },
-          );
+          // Get.toNamed(
+          //   AppRoutes.changePassword,
+          //   arguments: {
+          //     "mobile": mobile.toString(),
+          //     "old_pass": oldpass.toString(),
+          //   },
+          // );
           // Get.offNamed('/dashboard');
         } else if (response[0].status == "false") {
           Get.snackbar(
