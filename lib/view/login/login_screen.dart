@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../controller/login/login_controller.dart';
 import '../../utility/app_colors.dart';
@@ -52,12 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 24),
                 const Text(
-                  'Employees Log In \nWelcome Back',
+                  'Employee\'s Log In \nWelcome Back',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Sign in to continue managing your medications',
+                  'Log in to continue managing your medications',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 24),
@@ -164,26 +165,48 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed(AppRoutes.customerLogin);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'Customer Log In',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                  ),
-                ),
+                _signup(context),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  _signup(context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Are you a customer? "),
+        GestureDetector(
+          onTap: () => Get.toNamed(AppRoutes.customerLogin),
+          child: Text(
+            "Log In",
+            style: GoogleFonts.poppins(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        // TextButton(
+        //   onPressed: () {
+        //     Get.toNamed(AppRoutes.customerLogin);
+        //     // Navigator.push(context,
+        //     //     MaterialPageRoute(builder: (context) => SignupPage()));
+        //     // controller.lo
+        //   },
+        //   child: Text(
+        //     "Log In",
+        //     style: GoogleFonts.poppins(
+        //       color: AppColors.primary,
+        //       fontWeight: FontWeight.w600,
+        //       fontSize: 16,
+        //     ),
+        //   ),
+        // ),
+      ],
     );
   }
 }

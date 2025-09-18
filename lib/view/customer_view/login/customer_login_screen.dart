@@ -62,12 +62,12 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                 ),
                 const SizedBox(height: 24),
                 const Text(
-                  'Customers Log In \nWelcome Back',
+                  'Customer\'s Log In \nWelcome Back',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Sign in to continue managing your medications',
+                  'Log in to continue managing your medications',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 24),
@@ -173,11 +173,49 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
+                const SizedBox(height: 30),
+                _signup(context),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  _signup(context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Are you a employee? "),
+        GestureDetector(
+          onTap: () => Get.offAllNamed(AppRoutes.login),
+          child: Text(
+            "Log In",
+            style: GoogleFonts.poppins(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        // TextButton(
+        //   onPressed: () {
+        //     Get.toNamed(AppRoutes.login);
+        //     // Navigator.push(context,
+        //     //     MaterialPageRoute(builder: (context) => SignupPage()));
+        //     // controller.lo
+        //   },
+        //   child: Text(
+        //     "Log In",
+        //     style: GoogleFonts.poppins(
+        //       color: AppColors.primary,
+        //       fontWeight: FontWeight.w600,
+        //       fontSize: 16,
+        //     ),
+        //   ),
+        // ),
+      ],
     );
   }
 }
