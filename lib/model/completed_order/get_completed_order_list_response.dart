@@ -1,12 +1,15 @@
 import 'dart:convert';
 
-List<GetCompletedOrderListResponse> getCompletedOrderListResponseFromJson(String str) {
+List<GetCompletedOrderListResponse> getCompletedOrderListResponseFromJson(
+  String str,
+) {
   try {
     final decoded = json.decode(str);
     if (decoded is List) {
       return List<GetCompletedOrderListResponse>.from(
         decoded.map(
-          (x) => GetCompletedOrderListResponse.fromJson(x as Map<String, dynamic>),
+          (x) =>
+              GetCompletedOrderListResponse.fromJson(x as Map<String, dynamic>),
         ),
       );
     }
@@ -17,8 +20,9 @@ List<GetCompletedOrderListResponse> getCompletedOrderListResponseFromJson(String
   }
 }
 
-String getCompletedOrderListResponseToJson(List<GetCompletedOrderListResponse> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String getCompletedOrderListResponseToJson(
+  List<GetCompletedOrderListResponse> data,
+) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class GetCompletedOrderListResponse {
   String status;
@@ -49,11 +53,11 @@ class GetCompletedOrderListResponse {
   }
 
   Map<String, dynamic> toJson() => {
-        'status': status,
-        'message': message,
-        'document_path': documentPath,
-        'data': List<dynamic>.from(data.map((x) => x.toJson())),
-      };
+    'status': status,
+    'message': message,
+    'document_path': documentPath,
+    'data': List<dynamic>.from(data.map((x) => x.toJson())),
+  };
 }
 
 class CompletedOrderData {
@@ -91,6 +95,9 @@ class CompletedOrderData {
   String name;
   String employeeName;
   String salesEmployeeName;
+  String transportName;
+  String LrNumber;
+  DateTime? LrDate;
 
   CompletedOrderData({
     required this.id,
@@ -127,6 +134,9 @@ class CompletedOrderData {
     required this.name,
     required this.employeeName,
     required this.salesEmployeeName,
+    required this.transportName,
+    required this.LrNumber,
+   required this.LrDate,
   });
 
   factory CompletedOrderData.fromJson(Map<String, dynamic> json) {
@@ -177,45 +187,53 @@ class CompletedOrderData {
       name: json['name'] as String? ?? '',
       employeeName: json['employee_name'] as String? ?? '',
       salesEmployeeName: json['sales_employee'] as String? ?? '',
+      transportName: json['transport_name'] as String? ?? '',
+      LrNumber: json['lr_number'] as String? ?? '',
+      LrDate: json['lr_date'] != null
+          ? _parseDateTime(json['lr_date'] as String?)
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'company_id': companyId,
-        'division_id': divisionId,
-        'process_type': processType,
-        'status_id': statusId,
-        'customer_id': customerId,
-        'sales_team_employee_id': salesTeamEmployeeId,
-        'transport_id': transportId,
-        'outword_date': outwordDate?.toIso8601String(),
-        'receipt_date': receiptDate?.toIso8601String(),
-        'order_date': orderDate?.toIso8601String(),
-        'invoice_date_process': invoiceDateProcess?.toIso8601String(),
-        'invoice_number_process': invoiceNumberProcess,
-        'order_copy': orderCopy,
-        'invoice_copy_new': invoiceCopyNew,
-        'verification_status': verificationStatus,
-        'order_status': orderStatus,
-        'weight': weight,
-        'num_of_cases': numOfCases,
-        'reason': reason,
-        'added_by': addedBy,
-        'generated_by': generatedBy,
-        'is_deleted': isDeleted,
-        'status': status,
-        'created_on': createdOn?.toIso8601String(),
-        'updated_on': updatedOn?.toIso8601String(),
-        'company_name': companyName,
-        'division_name': divisionName,
-        'customer_name': customerName,
-        'sales_team_employee_name': salesTeamEmployeeName,
-        'status_name': statusName,
-        'name': name,
-        'employee_name': employeeName,
-        'sales_employee': salesEmployeeName,
-      };
+    'id': id,
+    'company_id': companyId,
+    'division_id': divisionId,
+    'process_type': processType,
+    'status_id': statusId,
+    'customer_id': customerId,
+    'sales_team_employee_id': salesTeamEmployeeId,
+    'transport_id': transportId,
+    'outword_date': outwordDate?.toIso8601String(),
+    'receipt_date': receiptDate?.toIso8601String(),
+    'order_date': orderDate?.toIso8601String(),
+    'invoice_date_process': invoiceDateProcess?.toIso8601String(),
+    'invoice_number_process': invoiceNumberProcess,
+    'order_copy': orderCopy,
+    'invoice_copy_new': invoiceCopyNew,
+    'verification_status': verificationStatus,
+    'order_status': orderStatus,
+    'weight': weight,
+    'num_of_cases': numOfCases,
+    'reason': reason,
+    'added_by': addedBy,
+    'generated_by': generatedBy,
+    'is_deleted': isDeleted,
+    'status': status,
+    'created_on': createdOn?.toIso8601String(),
+    'updated_on': updatedOn?.toIso8601String(),
+    'company_name': companyName,
+    'division_name': divisionName,
+    'customer_name': customerName,
+    'sales_team_employee_name': salesTeamEmployeeName,
+    'status_name': statusName,
+    'name': name,
+    'employee_name': employeeName,
+    'sales_employee': salesEmployeeName,
+    'transport_name': transportName,
+    'lr_number': LrNumber,
+    'lr_date': LrDate?.toIso8601String(),
+  };
 
   static DateTime? _parseDateTime(String? dateStr) {
     if (dateStr == null || dateStr.isEmpty) return null;

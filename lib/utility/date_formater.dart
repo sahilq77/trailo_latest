@@ -38,7 +38,7 @@ class DateFormater {
         }
 
         if (!parsed) {
-          return 'Invalid date format: $inputDate';
+          return 'N/A';
         }
       }
 
