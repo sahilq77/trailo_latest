@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trailo/model/outward_list/get_outward_list_response.dart';
 import 'package:trailo/utility/app_routes.dart';
+import 'package:trailo/utility/app_utility.dart';
 import 'package:trailo/utility/date_formater.dart';
 import 'package:trailo/utility/app_colors.dart';
 import 'package:shimmer/shimmer.dart'; // Add shimmer package
@@ -222,7 +223,9 @@ class _OutwardDetailScreenState extends State<OutwardDetailScreen> {
                       ),
                       _buildDetailRow(
                         'Invoice Date',
-                        "${DateFormater.formatDate(controller.outwardDetail[0].invoiceDateProcess.toString())}",
+                        controller.outwardDetail[0].invoiceDateProcess != null
+                            ? "${DateFormater.formatDate(controller.outwardDetail[0].invoiceDateProcess.toString())}"
+                            : "-",
                       ),
                       _buildDetailRow(
                         'Invoice Number',
