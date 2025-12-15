@@ -229,100 +229,51 @@ class _InwardDetailScreenState extends State<InwardDetailScreen> {
                             ? formatDate(inward.vendorInvoiceDate.toString())
                             : '-',
                       ),
-                      _viewButton('LR Copy', "View", () {
-                        try {
-                          if (inward.lrCopy == null || inward.lrCopy!.isEmpty) {
-                            // Get.snackbar(
-                            //   'Error',
-                            //   'No LR Copy available to view',
-                            // );
-                            return;
-                          }
-
-                          final filePath = inward.lrCopy!.toLowerCase();
-                          final url = '${controller.url.value}${inward.lrCopy}';
-
-                          if (filePath.endsWith('.pdf')) {
-                            Get.toNamed(AppRoutes.viewpdf, arguments: url);
-                          } else if (filePath.endsWith('.jpg') ||
-                              filePath.endsWith('.png') ||
-                              filePath.endsWith('.jpeg')) {
-                            Get.toNamed(AppRoutes.viewImage, arguments: url);
-                          } else {
-                            // Get.snackbar(
-                            //   'Error',
-                            //   'Unsupported file format for LR Copy',
-                            // );
-                          }
-                        } catch (e) {
-                          // Get.snackbar('Error', 'Failed to open LR Copy');
-                        }
-                      }),
-                      _viewButton('Debit Note Copy', "View", () {
-                        try {
-                          if (inward.debitNoteCopy == null ||
-                              inward.debitNoteCopy!.isEmpty) {
-                            // Get.snackbar(
-                            //   'Error',
-                            //   'No Debit Note Copy available to view',
-                            // );
-                            return;
-                          }
-
-                          final filePath = inward.debitNoteCopy!.toLowerCase();
-                          final url =
-                              '${controller.url.value}${inward.debitNoteCopy}';
-
-                          if (filePath.endsWith('.pdf')) {
-                            Get.toNamed(AppRoutes.viewpdf, arguments: url);
-                          } else if (filePath.endsWith('.jpg') ||
-                              filePath.endsWith('.png') ||
-                              filePath.endsWith('.jpeg')) {
-                            Get.toNamed(AppRoutes.viewImage, arguments: url);
-                          } else {
-                            // Get.snackbar(
-                            //   'Error',
-                            //   'Unsupported file format for Debit Note Copy',
-                            // );
-                          }
-                        } catch (e) {
-                          // Get.snackbar(
-                          //   'Error',
-                          //   'Failed to open Debit Note Copy',
-                          // );
-                        }
-                      }),
-                      _viewButton('Invoice Copy', "View", () {
-                        try {
-                          if (inward.invoiceCopy == null ||
-                              inward.invoiceCopy!.isEmpty) {
-                            // Get.snackbar(
-                            //   'Error',
-                            //   'No Invoice Copy available to view',
-                            // );
-                            return;
-                          }
-
-                          final filePath = inward.invoiceCopy!.toLowerCase();
-                          final url =
-                              '${controller.url.value}${inward.invoiceCopy}';
-
-                          if (filePath.endsWith('.pdf')) {
-                            Get.toNamed(AppRoutes.viewpdf, arguments: url);
-                          } else if (filePath.endsWith('.jpg') ||
-                              filePath.endsWith('.png') ||
-                              filePath.endsWith('.jpeg')) {
-                            Get.toNamed(AppRoutes.viewImage, arguments: url);
-                          } else {
-                            // Get.snackbar(
-                            //   'Error',
-                            //   'Unsupported file format for Invoice Copy',
-                            // );
-                          }
-                        } catch (e) {
-                          //  Get.snackbar('Error', 'Failed to open Invoice Copy');
-                        }
-                      }),
+                      inward.lrCopy != null && inward.lrCopy!.isNotEmpty
+                          ? _viewButton('LR Copy', "View", () {
+                              try {
+                                final filePath = inward.lrCopy!.toLowerCase();
+                                final url = '${controller.url.value}${inward.lrCopy}';
+                                if (filePath.endsWith('.pdf')) {
+                                  Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                                } else if (filePath.endsWith('.jpg') ||
+                                    filePath.endsWith('.png') ||
+                                    filePath.endsWith('.jpeg')) {
+                                  Get.toNamed(AppRoutes.viewImage, arguments: url);
+                                }
+                              } catch (e) {}
+                            })
+                          : _buildDetailRow('LR Copy', '-'),
+                      inward.debitNoteCopy != null && inward.debitNoteCopy!.isNotEmpty
+                          ? _viewButton('Debit Note Copy', "View", () {
+                              try {
+                                final filePath = inward.debitNoteCopy!.toLowerCase();
+                                final url = '${controller.url.value}${inward.debitNoteCopy}';
+                                if (filePath.endsWith('.pdf')) {
+                                  Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                                } else if (filePath.endsWith('.jpg') ||
+                                    filePath.endsWith('.png') ||
+                                    filePath.endsWith('.jpeg')) {
+                                  Get.toNamed(AppRoutes.viewImage, arguments: url);
+                                }
+                              } catch (e) {}
+                            })
+                          : _buildDetailRow('Debit Note Copy', '-'),
+                      inward.invoiceCopy != null && inward.invoiceCopy!.isNotEmpty
+                          ? _viewButton('Invoice Copy', "View", () {
+                              try {
+                                final filePath = inward.invoiceCopy!.toLowerCase();
+                                final url = '${controller.url.value}${inward.invoiceCopy}';
+                                if (filePath.endsWith('.pdf')) {
+                                  Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                                } else if (filePath.endsWith('.jpg') ||
+                                    filePath.endsWith('.png') ||
+                                    filePath.endsWith('.jpeg')) {
+                                  Get.toNamed(AppRoutes.viewImage, arguments: url);
+                                }
+                              } catch (e) {}
+                            })
+                          : _buildDetailRow('Invoice Copy', '-'),
                       _viewButton('Credit Note/ GRN Details', "View", () {
                         Get.toNamed(AppRoutes.viewNote, arguments: inward.id);
                       }),
