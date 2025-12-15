@@ -137,6 +137,9 @@ class PendingOverdueListController extends GetxController {
                   employeeName: outward.employeeName,
                   orderStatus: outward.orderStatus,
                   transportId: outward.transportId,
+                  transportName: outward.transportName,
+                  LrNumber: outward.LrNumber,
+                  LrDate: outward.LrDate,
                 ),
               );
               existingIds.add(outward.id);

@@ -95,6 +95,9 @@ class PendingOverdueData {
   String name;
   String employeeName;
   String salesEmployeeName;
+  String transportName;
+  String LrNumber;
+  DateTime? LrDate;
 
   PendingOverdueData({
     required this.id,
@@ -131,6 +134,9 @@ class PendingOverdueData {
     required this.name,
     required this.employeeName,
     required this.salesEmployeeName,
+    required this.transportName,
+    required this.LrNumber,
+    required this.LrDate,
   });
 
   factory PendingOverdueData.fromJson(Map<String, dynamic> json) {
@@ -181,6 +187,11 @@ class PendingOverdueData {
       name: json['name'] as String? ?? '',
       employeeName: json['employee_name'] as String? ?? '',
       salesEmployeeName: json['sales_employee'] as String? ?? '',
+      transportName: json['transport_name'] as String? ?? '',
+      LrNumber: json['lr_number'] as String? ?? '',
+      LrDate: json['lr_date'] != null
+          ? _parseDateTime(json['lr_date'] as String?)
+          : null,
     );
   }
 
@@ -219,6 +230,9 @@ class PendingOverdueData {
     'name': name,
     'employee_name': employeeName,
     'sales_employee': salesEmployeeName,
+    'transport_name': transportName,
+    'lr_number': LrNumber,
+    'lr_date': LrDate?.toIso8601String(),
   };
 
   static DateTime? _parseDateTime(String? dateStr) {
