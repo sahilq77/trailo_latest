@@ -68,38 +68,43 @@ class _PendingOverdueDetailState extends State<PendingOverdueDetail> {
           'Transport',
           overdue!.transportName.isNotEmpty ? overdue!.transportName : "N/A",
         ),
-        _viewButton('Order Copy', () {
-          try {
-            if (overdue == null || overdue!.orderCopy == null) return;
-            final filePath = overdue!.orderCopy.toString().toLowerCase();
-            final url = '${controller.url.value}${overdue!.orderCopy}';
-            if (filePath.endsWith('.pdf')) {
-              Get.toNamed(AppRoutes.viewpdf, arguments: url);
-            } else if (filePath.endsWith('.jpg') ||
-                filePath.endsWith('.png') ||
-                filePath.endsWith('.jpeg')) {
-              Get.toNamed(AppRoutes.viewImage, arguments: url);
-            }
-          } catch (e) {
-            print('Error in viewButton: $e');
-          }
-        }),
-        _viewButton('Invoice Copy', () {
-          try {
-            if (overdue == null || overdue!.invoiceCopyNew == null) return;
-            final filePath = overdue!.invoiceCopyNew.toString().toLowerCase();
-            final url = '${controller.url.value}${overdue!.invoiceCopyNew}';
-            if (filePath.endsWith('.pdf')) {
-              Get.toNamed(AppRoutes.viewpdf, arguments: url);
-            } else if (filePath.endsWith('.jpg') ||
-                filePath.endsWith('.png') ||
-                filePath.endsWith('.jpeg')) {
-              Get.toNamed(AppRoutes.viewImage, arguments: url);
-            }
-          } catch (e) {
-            print('Error in viewButton: $e');
-          }
-        }),
+        overdue!.orderCopy != null && overdue!.orderCopy!.isNotEmpty
+            ? _viewButton('Order Copy', () {
+                try {
+                  final filePath = overdue!.orderCopy.toString().toLowerCase();
+                  final url = '${controller.url.value}${overdue!.orderCopy}';
+                  if (filePath.endsWith('.pdf')) {
+                    Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                  } else if (filePath.endsWith('.jpg') ||
+                      filePath.endsWith('.png') ||
+                      filePath.endsWith('.jpeg')) {
+                    Get.toNamed(AppRoutes.viewImage, arguments: url);
+                  }
+                } catch (e) {
+                  print('Error in viewButton: $e');
+                }
+              })
+            : _buildDetailRow('Order Copy', '-'),
+        overdue!.invoiceCopyNew != null && overdue!.invoiceCopyNew!.isNotEmpty
+            ? _viewButton('Invoice Copy', () {
+                try {
+                  final filePath = overdue!.invoiceCopyNew
+                      .toString()
+                      .toLowerCase();
+                  final url =
+                      '${controller.url.value}${overdue!.invoiceCopyNew}';
+                  if (filePath.endsWith('.pdf')) {
+                    Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                  } else if (filePath.endsWith('.jpg') ||
+                      filePath.endsWith('.png') ||
+                      filePath.endsWith('.jpeg')) {
+                    Get.toNamed(AppRoutes.viewImage, arguments: url);
+                  }
+                } catch (e) {
+                  print('Error in viewButton: $e');
+                }
+              })
+            : _buildDetailRow('Invoice Copy', '-'),
       ];
     } else {
       return [
@@ -153,38 +158,43 @@ class _PendingOverdueDetailState extends State<PendingOverdueDetail> {
           'LR Date',
           "${DateFormater.formatDate(overdue!.LrDate.toString())}",
         ),
-        _viewButton('Order Copy', () {
-          try {
-            if (overdue == null || overdue!.orderCopy == null) return;
-            final filePath = overdue!.orderCopy.toString().toLowerCase();
-            final url = '${controller.url.value}${overdue!.orderCopy}';
-            if (filePath.endsWith('.pdf')) {
-              Get.toNamed(AppRoutes.viewpdf, arguments: url);
-            } else if (filePath.endsWith('.jpg') ||
-                filePath.endsWith('.png') ||
-                filePath.endsWith('.jpeg')) {
-              Get.toNamed(AppRoutes.viewImage, arguments: url);
-            }
-          } catch (e) {
-            print('Error in viewButton: $e');
-          }
-        }),
-        _viewButton('Invoice Copy', () {
-          try {
-            if (overdue == null || overdue!.invoiceCopyNew == null) return;
-            final filePath = overdue!.invoiceCopyNew.toString().toLowerCase();
-            final url = '${controller.url.value}${overdue!.invoiceCopyNew}';
-            if (filePath.endsWith('.pdf')) {
-              Get.toNamed(AppRoutes.viewpdf, arguments: url);
-            } else if (filePath.endsWith('.jpg') ||
-                filePath.endsWith('.png') ||
-                filePath.endsWith('.jpeg')) {
-              Get.toNamed(AppRoutes.viewImage, arguments: url);
-            }
-          } catch (e) {
-            print('Error in viewButton: $e');
-          }
-        }),
+        overdue!.orderCopy != null && overdue!.orderCopy!.isNotEmpty
+            ? _viewButton('Order Copy', () {
+                try {
+                  final filePath = overdue!.orderCopy.toString().toLowerCase();
+                  final url = '${controller.url.value}${overdue!.orderCopy}';
+                  if (filePath.endsWith('.pdf')) {
+                    Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                  } else if (filePath.endsWith('.jpg') ||
+                      filePath.endsWith('.png') ||
+                      filePath.endsWith('.jpeg')) {
+                    Get.toNamed(AppRoutes.viewImage, arguments: url);
+                  }
+                } catch (e) {
+                  print('Error in viewButton: $e');
+                }
+              })
+            : _buildDetailRow('Order Copy', '-'),
+        overdue!.invoiceCopyNew != null && overdue!.invoiceCopyNew!.isNotEmpty
+            ? _viewButton('Invoice Copy', () {
+                try {
+                  final filePath = overdue!.invoiceCopyNew
+                      .toString()
+                      .toLowerCase();
+                  final url =
+                      '${controller.url.value}${overdue!.invoiceCopyNew}';
+                  if (filePath.endsWith('.pdf')) {
+                    Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                  } else if (filePath.endsWith('.jpg') ||
+                      filePath.endsWith('.png') ||
+                      filePath.endsWith('.jpeg')) {
+                    Get.toNamed(AppRoutes.viewImage, arguments: url);
+                  }
+                } catch (e) {
+                  print('Error in viewButton: $e');
+                }
+              })
+            : _buildDetailRow('Invoice Copy', '-'),
       ];
     }
   }

@@ -67,60 +67,42 @@ class _CompletedOrderDetailState extends State<CompletedOrderDetail> {
           'Transport',
           order!.transportName.isNotEmpty ? order!.transportName : "N/A",
         ),
-        _viewButton('Order Copy', () {
-          try {
-            if (order == null || order!.orderCopy == null) {
-              print('Error: order or lrCopy is null');
-              return;
-            }
-
-            final filePath = order!.orderCopy.toString().toLowerCase();
-            final url = '${controller.url.value}${order!.orderCopy}';
-
-            print('Attempting to open: $url');
-
-            if (filePath.endsWith('.pdf')) {
-              print('Navigating to PDF viewer');
-              Get.toNamed(AppRoutes.viewpdf, arguments: url);
-            } else if (filePath.endsWith('.jpg') ||
-                filePath.endsWith('.png') ||
-                filePath.endsWith('.jpeg')) {
-              print('Navigating to Image viewer');
-              Get.toNamed(AppRoutes.viewImage, arguments: url);
-            } else {
-              print('Unsupported file type: $filePath');
-            }
-          } catch (e) {
-            print('Error in viewButton: $e');
-          }
-        }),
-        _viewButton('Invoice Copy', () {
-          try {
-            if (order == null || order!.invoiceCopyNew == null) {
-              print('Error: order or lrCopy is null');
-              return;
-            }
-
-            final filePath = order!.invoiceCopyNew.toString().toLowerCase();
-            final url = '${controller.url.value}${order!.invoiceCopyNew}';
-
-            print('Attempting to open: $url');
-
-            if (filePath.endsWith('.pdf')) {
-              print('Navigating to PDF viewer');
-              Get.toNamed(AppRoutes.viewpdf, arguments: url);
-            } else if (filePath.endsWith('.jpg') ||
-                filePath.endsWith('.png') ||
-                filePath.endsWith('.jpeg')) {
-              print('Navigating to Image viewer');
-              Get.toNamed(AppRoutes.viewImage, arguments: url);
-            } else {
-              print('Unsupported file type: $filePath');
-            }
-          } catch (e) {
-            print('Error in viewButton: $e');
-          }
-        }),
+        order!.orderCopy != null && order!.orderCopy!.isNotEmpty
+            ? _viewButton('Order Copy', () {
+                try {
+                  final filePath = order!.orderCopy.toString().toLowerCase();
+                  final url = '${controller.url.value}${order!.orderCopy}';
+                  if (filePath.endsWith('.pdf')) {
+                    Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                  } else if (filePath.endsWith('.jpg') ||
+                      filePath.endsWith('.png') ||
+                      filePath.endsWith('.jpeg')) {
+                    Get.toNamed(AppRoutes.viewImage, arguments: url);
+                  }
+                } catch (e) {
+                  print('Error in viewButton: $e');
+                }
+              })
+            : _buildDetailRow('Order Copy', '-'),
+        order!.invoiceCopyNew != null && order!.invoiceCopyNew!.isNotEmpty
+            ? _viewButton('Invoice Copy', () {
+                try {
+                  final filePath = order!.invoiceCopyNew
+                      .toString()
+                      .toLowerCase();
+                  final url = '${controller.url.value}${order!.invoiceCopyNew}';
+                  if (filePath.endsWith('.pdf')) {
+                    Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                  } else if (filePath.endsWith('.jpg') ||
+                      filePath.endsWith('.png') ||
+                      filePath.endsWith('.jpeg')) {
+                    Get.toNamed(AppRoutes.viewImage, arguments: url);
+                  }
+                } catch (e) {
+                  print('Error in viewButton: $e');
+                }
+              })
+            : _buildDetailRow('Invoice Copy', '-'),
       ];
     } else {
       return [
@@ -174,60 +156,42 @@ class _CompletedOrderDetailState extends State<CompletedOrderDetail> {
           'LR Date',
           "${DateFormater.formatDate(order!.LrDate.toString())}",
         ),
-        _viewButton('Order Copy', () {
-          try {
-            if (order == null || order!.orderCopy == null) {
-              print('Error: order or lrCopy is null');
-              return;
-            }
-
-            final filePath = order!.orderCopy.toString().toLowerCase();
-            final url = '${controller.url.value}${order!.orderCopy}';
-
-            print('Attempting to open: $url');
-
-            if (filePath.endsWith('.pdf')) {
-              print('Navigating to PDF viewer');
-              Get.toNamed(AppRoutes.viewpdf, arguments: url);
-            } else if (filePath.endsWith('.jpg') ||
-                filePath.endsWith('.png') ||
-                filePath.endsWith('.jpeg')) {
-              print('Navigating to Image viewer');
-              Get.toNamed(AppRoutes.viewImage, arguments: url);
-            } else {
-              print('Unsupported file type: $filePath');
-            }
-          } catch (e) {
-            print('Error in viewButton: $e');
-          }
-        }),
-        _viewButton('Invoice Copy', () {
-          try {
-            if (order == null || order!.invoiceCopyNew == null) {
-              print('Error: order or lrCopy is null');
-              return;
-            }
-
-            final filePath = order!.invoiceCopyNew.toString().toLowerCase();
-            final url = '${controller.url.value}${order!.invoiceCopyNew}';
-
-            print('Attempting to open: $url');
-
-            if (filePath.endsWith('.pdf')) {
-              print('Navigating to PDF viewer');
-              Get.toNamed(AppRoutes.viewpdf, arguments: url);
-            } else if (filePath.endsWith('.jpg') ||
-                filePath.endsWith('.png') ||
-                filePath.endsWith('.jpeg')) {
-              print('Navigating to Image viewer');
-              Get.toNamed(AppRoutes.viewImage, arguments: url);
-            } else {
-              print('Unsupported file type: $filePath');
-            }
-          } catch (e) {
-            print('Error in viewButton: $e');
-          }
-        }),
+        order!.orderCopy != null && order!.orderCopy!.isNotEmpty
+            ? _viewButton('Order Copy', () {
+                try {
+                  final filePath = order!.orderCopy.toString().toLowerCase();
+                  final url = '${controller.url.value}${order!.orderCopy}';
+                  if (filePath.endsWith('.pdf')) {
+                    Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                  } else if (filePath.endsWith('.jpg') ||
+                      filePath.endsWith('.png') ||
+                      filePath.endsWith('.jpeg')) {
+                    Get.toNamed(AppRoutes.viewImage, arguments: url);
+                  }
+                } catch (e) {
+                  print('Error in viewButton: $e');
+                }
+              })
+            : _buildDetailRow('Order Copy', '-'),
+        order!.invoiceCopyNew != null && order!.invoiceCopyNew!.isNotEmpty
+            ? _viewButton('Invoice Copy', () {
+                try {
+                  final filePath = order!.invoiceCopyNew
+                      .toString()
+                      .toLowerCase();
+                  final url = '${controller.url.value}${order!.invoiceCopyNew}';
+                  if (filePath.endsWith('.pdf')) {
+                    Get.toNamed(AppRoutes.viewpdf, arguments: url);
+                  } else if (filePath.endsWith('.jpg') ||
+                      filePath.endsWith('.png') ||
+                      filePath.endsWith('.jpeg')) {
+                    Get.toNamed(AppRoutes.viewImage, arguments: url);
+                  }
+                } catch (e) {
+                  print('Error in viewButton: $e');
+                }
+              })
+            : _buildDetailRow('Invoice Copy', '-'),
       ];
     }
   }
