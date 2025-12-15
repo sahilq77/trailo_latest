@@ -201,7 +201,7 @@ class _ViewNoteTableState extends State<ViewNoteTable> {
                       );
                     },
                     child: controller.noteList.isEmpty
-                        ? Center(child: Text(controller.errorMessage.value))
+                        ? const Center(child: Text('No data found'))
                         : SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             physics: const AlwaysScrollableScrollPhysics(),

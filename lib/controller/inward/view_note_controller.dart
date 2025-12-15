@@ -19,12 +19,6 @@ class ViewNoteController extends GetxController {
   final int limit = 10;
   RxString url = "".obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchNoteDetails(context: Get.context!, inwardId: "2727");
-  }
-
   Future<void> fetchNoteDetails({
     required BuildContext context,
     bool reset = false,
