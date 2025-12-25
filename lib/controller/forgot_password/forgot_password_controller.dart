@@ -10,7 +10,6 @@ import '../../model/login/get_login_response.dart';
 import '../../utility/app_colors.dart';
 import '../../utility/app_routes.dart';
 import '../../utility/app_utility.dart';
-import '../../utility/custom_flushbar.dart';
 
 class ForgotPasswordController extends GetxController {
   RxBool isLoading = true.obs;
@@ -52,10 +51,11 @@ class ForgotPasswordController extends GetxController {
           //   user.id.toString(),
           // );
 
-          CustomFlushbar.flushBarSuccessMessage(
+          Get.snackbar(
             'Success',
             'Mobile Number Verify Successfully',
-            context!,
+            backgroundColor: AppColors.success,
+            colorText: Colors.white,
           );
           Get.toNamed(
             AppRoutes.newspassword,
@@ -65,54 +65,61 @@ class ForgotPasswordController extends GetxController {
           );
           // Get.offNamed('/dashboard');
         } else if (response[0].status == "false") {
-          CustomFlushbar.flushBarErrorMessage(
+          Get.snackbar(
             'Failed',
             "You entered mobile number is incorrect.\nPlease try again.",
-            context!,
+            backgroundColor: AppColors.error,
+            colorText: Colors.white,
           );
         }
       } else {
         Get.back();
-        CustomFlushbar.flushBarErrorMessage(
+        Get.snackbar(
           'Error',
           'No response from server',
-          context!,
+          backgroundColor: AppColors.error,
+          colorText: Colors.white,
         );
       }
     } on NoInternetException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
-        'Unexpected error: $e',
-        context!,
+        'Unexpected errorColor: $e',
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
@@ -157,62 +164,70 @@ class ForgotPasswordController extends GetxController {
           //   user.id.toString(),
           // );
 
-          CustomFlushbar.flushBarSuccessMessage(
+          Get.snackbar(
             'Success',
             'Password Change Successfully',
-            context!,
+            backgroundColor: AppColors.success,
+            colorText: Colors.white,
           );
           Get.offNamed(AppRoutes.login);
           // Get.offNamed('/dashboard');
         } else {
-          CustomFlushbar.flushBarErrorMessage(
+          Get.snackbar(
             'Error',
             response[0].message,
-            context!,
+            backgroundColor: AppColors.error,
+            colorText: Colors.white,
           );
         }
       } else {
         Get.back();
-        CustomFlushbar.flushBarErrorMessage(
+        Get.snackbar(
           'Error',
           'Wrong Mobile Number',
-          context!,
+          backgroundColor: AppColors.error,
+          colorText: Colors.white,
         );
       }
     } on NoInternetException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
-        'Unexpected error: $e',
-        context!,
+        'Unexpected errorColor: $e',
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
