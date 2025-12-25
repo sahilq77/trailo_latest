@@ -8,7 +8,6 @@ import '../../core/network/networkcall.dart';
 import '../../core/urls.dart';
 import '../../utility/app_colors.dart';
 import '../../utility/app_utility.dart';
-import '../../utility/custom_flushbar.dart';
 
 class PendingOverdueListController extends GetxController {
   var pendingOverdueList = <PendingOverdueData>[].obs;
@@ -166,42 +165,47 @@ class PendingOverdueListController extends GetxController {
     } on NoInternetException catch (e) {
       errorMessage.value = e.message;
       log('NoInternetException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       errorMessage.value = e.message;
       log('TimeoutException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       errorMessage.value = '${e.message} (Code: ${e.statusCode})';
       log('HttpException: ${e.message} (Code: ${e.statusCode})');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       errorMessage.value = e.message;
       log('ParseException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       errorMessage.value = 'Unexpected error: $e';
       log('Unexpected error: $e');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         'Unexpected error: $e',
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
@@ -256,10 +260,11 @@ class PendingOverdueListController extends GetxController {
       }
     } catch (e) {
       errorMessage.value = 'Failed to refresh outwards: $e';
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         errorMessage.value,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       if (showLoading) {

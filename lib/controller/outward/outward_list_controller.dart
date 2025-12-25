@@ -15,7 +15,6 @@ import '../../model/inward_list/get_delete_inward_response.dart';
 import '../../model/outward_list/get_outward_list_response.dart';
 import '../../utility/app_colors.dart';
 import '../../utility/app_utility.dart';
-import '../../utility/custom_flushbar.dart';
 
 class OutwardListController extends GetxController {
   var outwardList = <OutwardListData>[].obs;
@@ -148,42 +147,47 @@ class OutwardListController extends GetxController {
     } on NoInternetException catch (e) {
       errorMessageDetail.value = e.message;
       log('NoInternetException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       errorMessageDetail.value = e.message;
       log('TimeoutException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       errorMessageDetail.value = '${e.message} (Code: ${e.statusCode})';
       log('HttpException: ${e.message} (Code: ${e.statusCode})');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       errorMessageDetail.value = e.message;
       log('ParseException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       errorMessageDetail.value = 'Unexpected error: $e';
       log('Unexpected error in fetchOutwardDetails: $e');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         'Unexpected error: $e',
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoadingDetail.value = false;
@@ -313,42 +317,47 @@ class OutwardListController extends GetxController {
     } on NoInternetException catch (e) {
       errorMessage.value = e.message;
       log('NoInternetException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       errorMessage.value = e.message;
       log('TimeoutException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       errorMessage.value = '${e.message} (Code: ${e.statusCode})';
       log('HttpException: ${e.message} (Code: ${e.statusCode})');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       errorMessage.value = e.message;
       log('ParseException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       errorMessage.value = 'Unexpected error: $e';
       log('Unexpected error: $e');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         'Unexpected error: $e',
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
@@ -403,10 +412,11 @@ class OutwardListController extends GetxController {
       }
     } catch (e) {
       errorMessage.value = 'Failed to refresh outwards: $e';
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         errorMessage.value,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       if (showLoading) {
@@ -435,63 +445,72 @@ class OutwardListController extends GetxController {
       if (list != null && list.isNotEmpty) {
         List<GetDeleteOutwardResponse> response = List.from(list);
         if (response[0].status == "true") {
-          CustomFlushbar.flushBarSuccessMessage(
+          Get.snackbar(
             'Success',
             'Deleted successfully',
-            context!,
+            backgroundColor: AppColors.success,
+            colorText: Colors.white,
+            duration: Duration(seconds: 3),
           );
-          await fetchOutwardList(context: context, reset: true);
+          await fetchOutwardList(context: context!, reset: true);
           Navigator.pop(context);
         } else {
           errorMessageUp.value = response[0].message;
-          CustomFlushbar.flushBarErrorMessage(
+          Get.snackbar(
             'Error',
             response[0].message,
-            context!,
+            backgroundColor: AppColors.error,
+            colorText: Colors.white,
           );
         }
       } else {
         errorMessageUp.value = 'No response from server';
-        CustomFlushbar.flushBarErrorMessage(
+        Get.snackbar(
           'Error',
           'No response from server',
-          context!,
+          backgroundColor: AppColors.error,
+          colorText: Colors.white,
         );
       }
     } on NoInternetException catch (e) {
       errorMessageUp.value = e.message;
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       errorMessageUp.value = e.message;
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       errorMessageUp.value = '${e.message} (Code: ${e.statusCode})';
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       errorMessageUp.value = e.message;
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       errorMessageUp.value = 'Unexpected error: $e';
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         'Unexpected error: $e',
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoadingup.value = false;
@@ -528,80 +547,91 @@ class OutwardListController extends GetxController {
 
         if (response[0].status == "true") {
           if (reason == null) {
-            CustomFlushbar.flushBarSuccessMessage(
+            Get.snackbar(
               'Success',
               'Transfer to Picked Successfully',
-              context!,
+              backgroundColor: AppColors.success,
+              colorText: Colors.white,
+              duration: Duration(seconds: 3),
             );
-            await fetchOutwardList(context: context, reset: true);
-            await refreshOutwardList(context: context, showLoading: false);
+            await fetchOutwardList(context: context!, reset: true);
+            await refreshOutwardList(context: context!, showLoading: false);
             Get.offNamed(AppRoutes.outwardList);
           } else {
-            CustomFlushbar.flushBarSuccessMessage(
+            Get.snackbar(
               'Success',
               'Transfer to Picked Successfully',
-              context!,
+              backgroundColor: AppColors.success,
+              colorText: Colors.white,
+              duration: Duration(seconds: 3),
             );
             await checkedController.fetchCheckedList(
-              context: context,
+              context: context!,
               reset: true,
             );
             await checkedController.refreshOutwardList(
-              context: context,
+              context: context!,
               showLoading: false,
             );
             Get.offNamed(AppRoutes.checkedbyoutward);
           }
         } else {
           errorMessageUp.value = response[0].message;
-          CustomFlushbar.flushBarErrorMessage(
+          Get.snackbar(
             'Error',
             response[0].message,
-            context!,
+            backgroundColor: AppColors.error,
+            colorText: Colors.white,
           );
         }
       } else {
         errorMessageUp.value = 'No response from server';
-        CustomFlushbar.flushBarErrorMessage(
+        Get.snackbar(
           'Error',
           'No response from server',
-          context!,
+          backgroundColor: AppColors.error,
+          colorText: Colors.white,
         );
       }
     } on NoInternetException catch (e) {
       errorMessageUp.value = e.message;
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       errorMessageUp.value = e.message;
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       errorMessageUp.value = '${e.message} (Code: ${e.statusCode})';
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       errorMessageUp.value = e.message;
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       errorMessageUp.value = 'Unexpected error: $e';
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         'Unexpected error: $e',
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoadingup.value = false;
