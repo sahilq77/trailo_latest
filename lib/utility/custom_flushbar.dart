@@ -5,11 +5,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trailo/utility/app_colors.dart';
 
 class CustomFlushbar {
-  static toastMessage(String message) {
-    Fluttertoast.showToast(msg: message);
-  }
-
-  static void flushBarErrorMessage(String title, String message, BuildContext context) {
+  static void flushBarErrorMessage(
+    String title,
+    String message,
+    BuildContext context,
+  ) {
     showFlushbar(
       context: context,
       flushbar: Flushbar(
@@ -29,7 +29,11 @@ class CustomFlushbar {
     );
   }
 
-  static void flushBarSuccessMessage(String title, String message, BuildContext context) {
+  static void flushBarSuccessMessage(
+    String title,
+    String message,
+    BuildContext context,
+  ) {
     showFlushbar(
       context: context,
       flushbar: Flushbar(
@@ -46,12 +50,6 @@ class CustomFlushbar {
         borderRadius: BorderRadius.circular(10),
         icon: Icon(Icons.check_circle, size: 28, color: Colors.white),
       )..show(context),
-    );
-  }
-
-  static snackBar(String message, BuildContext context) {
-    return ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor: Colors.red, content: Text(message)),
     );
   }
 }
