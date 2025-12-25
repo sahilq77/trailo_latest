@@ -29,8 +29,14 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.quick.trailo"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 35
+    ndkVersion = "29.0.14206865"
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+        }
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -52,10 +58,21 @@ android {
 
     defaultConfig {
         applicationId = "com.quick.trailo"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 24
+        targetSdk = 36
         versionCode = flutterVersionCode.toInt()
         versionName = flutterVersionName
+        
+        ndk {
+            abiFilters += listOf("arm64-v8a")
+        }
+        
+        externalNativeBuild {
+            cmake {
+                cppFlags += "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
+                arguments += "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
+            }
+        }
     }
 
     buildTypes {
