@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:trailo/utility/custom_flushbar.dart';
 import '../../core/network/createjson/creatjson.dart';
 import '../../core/network/exceptions.dart';
 import '../../core/network/networkcall.dart';
@@ -77,71 +78,45 @@ class LoginController extends GetxController {
           } else {
             log('Admin user: Skipping privilege fetch, full access granted');
           }
-          Get.snackbar(
-            'Success',
-            'Log in successful!',
-            backgroundColor: AppColors.success,
-            colorText: Colors.white,
-          );
+          CustomFlushbar.flushBarSuccessMessage("Success","Log in successful!", context!);
+          // Get.snackbar(
+          //   'Success',
+          //   'Log in successful!',
+          //   backgroundColor: AppColors.success,
+          //   colorText: Colors.white,
+          // );
           Get.offNamed(AppRoutes.home);
           // Get.offNamed('/dashboard');
         } else if (response[0].status == "false") {
-          Get.snackbar(
-            'Failed',
-            "Your mobile number or password is incorrect.\nPlease try again.",
-            backgroundColor: AppColors.error,
-            colorText: Colors.white,
+          CustomFlushbar.flushBarErrorMessage(
+            "Failed",
+            "Your mobile number or password is incorrect. Please try again.",
+            context!,
           );
         }
       } else {
         Get.back();
-        Get.snackbar(
-          'Error',
-          'No response from server',
-          backgroundColor: AppColors.error,
-          colorText: Colors.white,
+        CustomFlushbar.flushBarErrorMessage(
+          "Error",
+          "No response from server",
+          context!,
         );
       }
     } on NoInternetException catch (e) {
       Get.back();
-      Get.snackbar(
-        'Error',
-        e.message,
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-      );
+      CustomFlushbar.flushBarErrorMessage( "Error",e.message, context!);
     } on TimeoutException catch (e) {
       Get.back();
-      Get.snackbar(
-        'Error',
-        e.message,
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-      );
+      CustomFlushbar.flushBarErrorMessage( "Error",e.message, context!);
     } on HttpException catch (e) {
       Get.back();
-      Get.snackbar(
-        'Error',
-        '${e.message} (Code: ${e.statusCode})',
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-      );
+      CustomFlushbar.flushBarErrorMessage( "Error",e.message, context!);
     } on ParseException catch (e) {
       Get.back();
-      Get.snackbar(
-        'Error',
-        e.message,
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-      );
+      CustomFlushbar.flushBarErrorMessage( "Error",e.message, context!);
     } catch (e) {
       Get.back();
-      Get.snackbar(
-        'Error',
-        'Unexpected errorColor: $e',
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-      );
+      CustomFlushbar.flushBarErrorMessage( "Error",'Unexpected error: $e', context!);
     } finally {
       isLoading.value = false;
     }
