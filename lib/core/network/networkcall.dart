@@ -42,6 +42,7 @@ import '../../model/picked_by_list/get_transfer_to_checked_response.dart';
 import '../../model/vendor/get_vender_response.dart';
 import '../../utility/app_routes.dart';
 import '../../utility/customdesign/connctivityservice.dart';
+import '../../utility/custom_flushbar.dart';
 
 class Networkcall {
   final ConnectivityService _connectivityService =
@@ -226,13 +227,10 @@ class Networkcall {
       return null;
     } on TimeoutException catch (e) {
       log("url : $url \n Request body : $body \n Response : $e");
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Request Timed Out',
         'The server took too long to respond. Please try again.',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
+        context,
       );
       return null;
     } on HttpException catch (e) {
@@ -318,13 +316,10 @@ class Networkcall {
       return null;
     } on TimeoutException catch (e) {
       log("url : $url \n Request body : $formData \n Response : $e");
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Request Timed Out',
         'The server took too long to respond. Please try again.',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
+        context,
       );
       return null;
     } on HttpException catch (e) {
@@ -399,13 +394,10 @@ class Networkcall {
       return null;
     } on TimeoutException catch (e) {
       log("url : $url \n Response : $e");
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Request Timed Out',
         'The server took too long to respond. Please try again.',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
+        context,
       );
       return null;
     } on HttpException catch (e) {
