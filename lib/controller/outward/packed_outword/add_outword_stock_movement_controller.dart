@@ -11,7 +11,6 @@ import 'package:trailo/core/urls.dart';
 import 'package:trailo/utility/app_utility.dart';
 import 'package:trailo/utility/app_colors.dart';
 import 'package:trailo/utility/app_routes.dart';
-import 'package:trailo/utility/custom_flushbar.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
@@ -53,10 +52,22 @@ class AddOutwordStockMovementController extends GetxController {
                 .isGranted;
             if (!granted) {
               log('MANAGE_EXTERNAL_STORAGE denied, prompting system settings');
-              CustomFlushbar.flushBarErrorMessage(
+              Get.snackbar(
                 'Permission Required',
                 'Please enable "All Files Access" in system settings to pick files.',
-                Get.context!,
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: AppColors.error,
+                colorText: Colors.white,
+                mainButton: TextButton(
+                  onPressed: () {
+                    log('Opening system settings for MANAGE_EXTERNAL_STORAGE');
+                    openAppSettings();
+                  },
+                  child: Text(
+                    'Open Settings',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               );
             } else {
               log('MANAGE_EXTERNAL_STORAGE granted');
@@ -90,10 +101,12 @@ class AddOutwordStockMovementController extends GetxController {
 
     if (!granted) {
       log('All permissions denied');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Permission Denied',
         'Storage access is required to pick files.',
-        Get.context!,
+
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     }
     return granted;
@@ -129,10 +142,12 @@ class AddOutwordStockMovementController extends GetxController {
       }
     } catch (e, stackTrace) {
       log('Error picking file for $field: $e', stackTrace: stackTrace);
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         'Failed to pick file: $e',
-        Get.context!,
+
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     }
   }
@@ -197,62 +212,70 @@ class AddOutwordStockMovementController extends GetxController {
         log('Parsed response: $jsonResponse');
         print("Status===> ${jsonResponse['status']}");
         if (jsonResponse['status'] == 'true') {
-          CustomFlushbar.flushBarSuccessMessage(
+          Get.snackbar(
             'Success',
             'Stock Movement Added Successfully',
-            context!,
+            backgroundColor: AppColors.success,
+            colorText: Colors.white,
           );
           await controller.refreshDetails(context: context, id: id);
           Navigator.pop(context!);
         } else {
-          CustomFlushbar.flushBarErrorMessage(
+          Get.snackbar(
             'Failed',
             'Stock Movement Add Failed',
-            context!,
+            backgroundColor: AppColors.error,
+            colorText: Colors.white,
           );
         }
       } else {
         Get.back();
-        CustomFlushbar.flushBarErrorMessage(
+        Get.snackbar(
           'Error',
           'No response from server',
-          context!,
+          backgroundColor: AppColors.error,
+          colorText: Colors.white,
         );
       }
     } on NoInternetException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
-        'Unexpected error: $e',
-        context!,
+        'Unexpected errorColor: $e',
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
