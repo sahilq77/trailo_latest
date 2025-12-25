@@ -64,12 +64,12 @@ class VendorController extends GetxController {
             'Vendor List Loaded: ${vendorsList.map((s) => "${s.vendorId}: ${s.vendorName}").toList()}',
           );
         } else {
-          errorMessage.value = response[0].message;
-          CustomFlushbar.flushBarErrorMessage(
-            'Error',
-            response[0].message,
-            context,
-          );
+          // errorMessage.value = response[0].message;
+          // CustomFlushbar.flushBarErrorMessage(
+          //   'Error',
+          //   response[0].message,
+          //   context,
+          // );
         }
       } else {
         errorMessage.value = 'No response from server';
@@ -81,18 +81,10 @@ class VendorController extends GetxController {
       }
     } on NoInternetException catch (e) {
       errorMessage.value = e.message;
-      CustomFlushbar.flushBarErrorMessage(
-        'Error',
-        e.message,
-        context,
-      );
+      CustomFlushbar.flushBarErrorMessage('Error', e.message, context);
     } on TimeoutException catch (e) {
       errorMessage.value = e.message;
-      CustomFlushbar.flushBarErrorMessage(
-        'Error',
-        e.message,
-        context,
-      );
+      CustomFlushbar.flushBarErrorMessage('Error', e.message, context);
     } on HttpException catch (e) {
       errorMessage.value = '${e.message} (Code: ${e.statusCode})';
       CustomFlushbar.flushBarErrorMessage(
@@ -102,11 +94,7 @@ class VendorController extends GetxController {
       );
     } on ParseException catch (e) {
       errorMessage.value = e.message;
-      CustomFlushbar.flushBarErrorMessage(
-        'Error',
-        e.message,
-        context,
-      );
+      CustomFlushbar.flushBarErrorMessage('Error', e.message, context);
     } catch (e, stackTrace) {
       errorMessage.value = 'Unexpected error: $e';
       log('Fetch Vendor Exception: $e, stack: $stackTrace');
