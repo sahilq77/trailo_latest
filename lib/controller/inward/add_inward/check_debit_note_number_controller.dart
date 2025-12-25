@@ -39,12 +39,7 @@ class CheckDebitNoteNumberController extends GetxController {
           final user = response[0].flag;
           flag.value = user;
           if (user == "1") {
-            // Get.snackbar(
-            //   'Failed',
-            //   'Invoice Number Already Exists',
-            //   backgroundColor: AppColors.error,
-            //   colorText: Colors.white,
-            // );
+          
           }
         } else if (response[0].status == "false") {
           final user = response[0].flag;

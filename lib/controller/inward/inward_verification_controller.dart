@@ -13,6 +13,7 @@ import 'package:trailo/utility/app_colors.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import '../../../core/network/exceptions.dart';
+import '../../../utility/custom_flushbar.dart';
 
 class InwardVerificationController extends GetxController {
   final controller = Get.put(InwardListController());
@@ -49,22 +50,10 @@ class InwardVerificationController extends GetxController {
                 .isGranted;
             if (!granted) {
               log('MANAGE_EXTERNAL_STORAGE denied, prompting system settings');
-              Get.snackbar(
+              CustomFlushbar.flushBarErrorMessage(
                 'Permission Required',
                 'Please enable "All Files Access" in system settings to pick files.',
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: AppColors.error,
-                colorText: Colors.white,
-                mainButton: TextButton(
-                  onPressed: () {
-                    log('Opening system settings for MANAGE_EXTERNAL_STORAGE');
-                    openAppSettings();
-                  },
-                  child: const Text(
-                    'Open Settings',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+                Get.context!,
               );
             } else {
               log('MANAGE_EXTERNAL_STORAGE granted');
@@ -96,12 +85,10 @@ class InwardVerificationController extends GetxController {
 
     if (!granted) {
       log('All permissions denied');
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Permission Denied',
         'Storage access is required to pick files.',
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        Get.context!,
       );
     }
     return granted;
@@ -149,12 +136,10 @@ class InwardVerificationController extends GetxController {
       }
     } catch (e, stackTrace) {
       log('Error picking file for $field: $e', stackTrace: stackTrace);
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Error',
         'Failed to pick file: $e',
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        Get.context!,
       );
     }
   }
@@ -316,42 +301,35 @@ class InwardVerificationController extends GetxController {
         log('Parsed response: $jsonResponse');
         if (jsonResponse['status'] == 'true') {
           log('Submission successful: ${jsonResponse['message']}');
-          Get.snackbar(
+          CustomFlushbar.flushBarSuccessMessage(
             'Success',
             'Inward Verification Submitted Successfully',
-            backgroundColor: AppColors.success,
-            colorText: Colors.white,
+            context,
           );
           await controller.refreshDetails(context: context, id: id);
           Navigator.pop(context);
         } else {
           log('Submission failed: ${jsonResponse['message']}Q');
-          Get.snackbar(
+          CustomFlushbar.flushBarErrorMessage(
             'Error',
             jsonResponse['message'] ?? 'Failed to submit inward verification',
-            backgroundColor: AppColors.error,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
+            context,
           );
         }
       } else {
         log('Server error: ${response.statusCode}');
-        Get.snackbar(
+        CustomFlushbar.flushBarErrorMessage(
           'Error',
           'Server error: ${response.statusCode}',
-          backgroundColor: AppColors.error,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
+          context,
         );
       }
     } catch (e, stackTrace) {
       log('Error during submission: $e', stackTrace: stackTrace);
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Error',
         'Unexpected error: $e',
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        context,
       );
     } finally {
       isLoading.value = false;
