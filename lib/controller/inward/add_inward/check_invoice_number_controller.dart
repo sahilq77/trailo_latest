@@ -8,7 +8,6 @@ import '../../../core/network/exceptions.dart';
 import '../../../core/network/networkcall.dart';
 import '../../../core/urls.dart';
 import '../../../utility/app_colors.dart';
-import '../../../utility/custom_flushbar.dart';
 
 class CheckInvoiceNumberController extends GetxController {
   RxBool isLoading = true.obs;
@@ -38,7 +37,12 @@ class CheckInvoiceNumberController extends GetxController {
           final user = response[0].flag;
           flag.value = user;
           if (user == "1") {
-          
+            // Get.snackbar(
+            //   'Failed',
+            //   'Invoice Number Already Exists',
+            //   backgroundColor: AppColors.error,
+            //   colorText: Colors.white,
+            // );
           }
         } else if (response[0].status == "false") {
           final user = response[0].flag;
@@ -47,46 +51,52 @@ class CheckInvoiceNumberController extends GetxController {
         }
       } else {
        // Get.back();
-        CustomFlushbar.flushBarErrorMessage(
+        Get.snackbar(
           'Error',
           'No response from server',
-          context!,
+          backgroundColor: AppColors.error,
+          colorText: Colors.white,
         );
       }
     } on NoInternetException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context!,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       Get.back();
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
-        'Unexpected error: $e',
-        context!,
+        'Unexpected errorColor: $e',
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;

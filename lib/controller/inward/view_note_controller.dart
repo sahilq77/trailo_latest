@@ -8,7 +8,6 @@ import 'package:trailo/utility/app_utility.dart';
 import '../../core/network/exceptions.dart';
 import '../../core/network/networkcall.dart';
 import '../../core/urls.dart';
-import '../../utility/custom_flushbar.dart';
 
 class ViewNoteController extends GetxController {
   var noteList = <CreditNote>[].obs;
@@ -83,42 +82,47 @@ class ViewNoteController extends GetxController {
     } on NoInternetException catch (e) {
       errorMessage.value = e.message;
       log('NoInternetException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
       errorMessage.value = e.message;
       log('TimeoutException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on HttpException catch (e) {
       errorMessage.value = '${e.message} (Code: ${e.statusCode})';
       log('HttpException: ${e.message} (Code: ${e.statusCode})');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } on ParseException catch (e) {
       errorMessage.value = e.message;
       log('ParseException: ${e.message}');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         e.message,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } catch (e) {
       errorMessage.value = 'Unexpected error: $e';
       log('Unexpected error: $e');
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         'Unexpected error: $e',
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
@@ -154,10 +158,11 @@ class ViewNoteController extends GetxController {
       }
     } catch (e) {
       errorMessage.value = 'Failed to refresh notes: $e';
-      CustomFlushbar.flushBarErrorMessage(
+      Get.snackbar(
         'Error',
         errorMessage.value,
-        context,
+        backgroundColor: AppColors.error,
+        colorText: Colors.white,
       );
     } finally {
       if (showLoading) {

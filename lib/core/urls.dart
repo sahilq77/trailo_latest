@@ -92,6 +92,9 @@ class Networkutility {
   static int checkOldPassApi = 37;
   static String changePass = "${baseUrl + "change-password-app"}";
   static int changePassApi = 38;
+
+  
+  
 }
 // static String csutomerLogin = "${baseUrl + "customer-login-app"}";
   // static int customerLoginApi = 37;
