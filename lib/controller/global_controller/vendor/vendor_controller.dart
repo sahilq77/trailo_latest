@@ -12,6 +12,7 @@ import '../../../core/urls.dart';
 import '../../../model/global_model/customers/get_customers_response.dart';
 import '../../../model/vendor/get_vender_response.dart';
 import '../../../utility/app_colors.dart';
+import '../../../utility/custom_flushbar.dart';
 
 class VendorController extends GetxController {
   RxList<VendorData> vendorsList = <VendorData>[].obs;
@@ -64,62 +65,55 @@ class VendorController extends GetxController {
           );
         } else {
           errorMessage.value = response[0].message;
-          Get.snackbar(
+          CustomFlushbar.flushBarErrorMessage(
             'Error',
             response[0].message,
-            backgroundColor: AppColors.error,
-            colorText: Colors.white,
+            context,
           );
         }
       } else {
         errorMessage.value = 'No response from server';
-        Get.snackbar(
+        CustomFlushbar.flushBarErrorMessage(
           'Error',
           'No response from server',
-          backgroundColor: AppColors.error,
-          colorText: Colors.white,
+          context,
         );
       }
     } on NoInternetException catch (e) {
       errorMessage.value = e.message;
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Error',
         e.message,
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
+        context,
       );
     } on TimeoutException catch (e) {
       errorMessage.value = e.message;
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Error',
         e.message,
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
+        context,
       );
     } on HttpException catch (e) {
       errorMessage.value = '${e.message} (Code: ${e.statusCode})';
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
+        context,
       );
     } on ParseException catch (e) {
       errorMessage.value = e.message;
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Error',
         e.message,
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
+        context,
       );
     } catch (e, stackTrace) {
       errorMessage.value = 'Unexpected error: $e';
       log('Fetch Vendor Exception: $e, stack: $stackTrace');
-      Get.snackbar(
+      CustomFlushbar.flushBarErrorMessage(
         'Error',
         'Unexpected error: $e',
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
+        context,
       );
     } finally {
       isLoading.value = false;
