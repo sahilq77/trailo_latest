@@ -227,38 +227,33 @@ class AddOutwardController extends GetxController {
           await controller.fetchOutwardList(context: context!, reset: true);
           await controller.refreshOutwardList(
             context: context!,
-            showLoading: false,
+            showLoading:
+                false, // Optional: Set to false to avoid showing loading indicator
           );
 
           if (edit == true) {
-            Navigator.pop(Get.context!);
+            CustomFlushbar.flushBarSuccessMessage(
+              'Success',
+              'Outward Edited Successfully', // Updated message to reflect "Outward"
+              context,
+            );
             await controller.refreshOutwardDetails(
               context: context,
               id: id ?? "",
             );
-            CustomFlushbar.flushBarSuccessMessage(
-              'Success',
-              'Outward Edited Successfully',
-              context,
-            );
-
-            // Use a delay to ensure flushbar is shown before navigation
-            // await Future.delayed(Duration(milliseconds: 500));
-            // if (Navigator.canPop(context)) {
-
-            // }
+            Navigator.pop(context);
           } else {
+            Get.offNamed(AppRoutes.outwardList);
             CustomFlushbar.flushBarSuccessMessage(
               'Success',
-              'Outward Added Successfully',
+              'Outward Added Successfully', // Updated message to reflect "Outward"
               context,
             );
-            // Use a delay to ensure flushbar is shown before navigation
-            await Future.delayed(Duration(milliseconds: 500));
-            Get.offNamed(AppRoutes.outwardList);
           }
         }
+        // Refresh the OutwardListController data
       } else {
+        Get.back();
         CustomFlushbar.flushBarErrorMessage(
           'Error',
           'No response from server',
@@ -266,18 +261,35 @@ class AddOutwardController extends GetxController {
         );
       }
     } on NoInternetException catch (e) {
-      CustomFlushbar.flushBarErrorMessage('Error', e.message, context!);
+      Get.back();
+      CustomFlushbar.flushBarErrorMessage(
+        'Error',
+        e.message,
+        context!,
+      );
     } on TimeoutException catch (e) {
-      CustomFlushbar.flushBarErrorMessage('Error', e.message, context!);
+      Get.back();
+      CustomFlushbar.flushBarErrorMessage(
+        'Error',
+        e.message,
+        context!,
+      );
     } on HttpException catch (e) {
+      Get.back();
       CustomFlushbar.flushBarErrorMessage(
         'Error',
         '${e.message} (Code: ${e.statusCode})',
         context!,
       );
     } on ParseException catch (e) {
-      CustomFlushbar.flushBarErrorMessage('Error', e.message, context!);
+      Get.back();
+      CustomFlushbar.flushBarErrorMessage(
+        'Error',
+        e.message,
+        context!,
+      );
     } catch (e) {
+      Get.back();
       CustomFlushbar.flushBarErrorMessage(
         'Error',
         'Unexpected error: $e',

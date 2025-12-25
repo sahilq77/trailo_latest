@@ -14,7 +14,6 @@ import '../../controller/global_controller/status/status_controller.dart';
 import '../../utility/app_colors.dart';
 import '../../utility/app_utility.dart';
 import '../../controller/outward/add_outward/add_outward_controller.dart';
-import '../../utility/custom_flushbar.dart';
 
 class AddOutwardScreen extends StatefulWidget {
   const AddOutwardScreen({super.key});
@@ -168,10 +167,11 @@ class _AddOutwardScreenState extends State<AddOutwardScreen> {
           if (isOrder) {
             // Ensure selected order date is not in the future
             if (selectedDateTime.isAfter(DateTime.now())) {
-              CustomFlushbar.flushBarErrorMessage(
+              Get.snackbar(
                 'Error',
                 'Order date and time cannot be in the future.',
-                context,
+                backgroundColor: AppColors.error,
+                colorText: Colors.white,
               );
               return;
             }
@@ -187,10 +187,11 @@ class _AddOutwardScreenState extends State<AddOutwardScreen> {
                     invoiceDate.isAtSameMomentAs(selectedDateTime)) {
                   invoiceDateController.clear();
                   _invoiceDate = null;
-                  CustomFlushbar.flushBarErrorMessage(
+                  Get.snackbar(
                     'Warning',
                     'Invoice date was cleared as it was earlier than or equal to the new order date.',
-                    context,
+                    backgroundColor: AppColors.secondary,
+                    colorText: Colors.white,
                   );
                 }
               }
@@ -203,10 +204,11 @@ class _AddOutwardScreenState extends State<AddOutwardScreen> {
               ).parse(_orderDate!);
               if (selectedDateTime.isBefore(orderDate) ||
                   selectedDateTime.isAtSameMomentAs(orderDate)) {
-                CustomFlushbar.flushBarErrorMessage(
+                Get.snackbar(
                   'Error',
                   'Invoice date and time must be after the order date and time.',
-                  context,
+                  backgroundColor: AppColors.error,
+                  colorText: Colors.white,
                 );
                 return;
               }
@@ -224,10 +226,11 @@ class _AddOutwardScreenState extends State<AddOutwardScreen> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       if (_processType == null) {
-        CustomFlushbar.flushBarErrorMessage(
+        Get.snackbar(
           'Error',
           'Please select a Process Type',
-          context,
+          backgroundColor: AppColors.error,
+          colorText: Colors.white,
         );
         return;
       }
@@ -242,10 +245,11 @@ class _AddOutwardScreenState extends State<AddOutwardScreen> {
         ).parse(_invoiceDate!);
         if (invoiceDate.isBefore(orderDate) ||
             invoiceDate.isAtSameMomentAs(orderDate)) {
-          CustomFlushbar.flushBarErrorMessage(
+          Get.snackbar(
             'Error',
             'Invoice date and time must be after the order date and time.',
-            context,
+            backgroundColor: AppColors.error,
+            colorText: Colors.white,
           );
           return;
         }
@@ -268,7 +272,13 @@ class _AddOutwardScreenState extends State<AddOutwardScreen> {
         'invoice_copy_new': controller.invoiceCopyFile.value?.name ?? '',
         'outward_id': '',
       };
-      controller.submitOutwardData(context: context, data: data);
+      controller.submitOutwardData(context: context, data: data).then((
+        success,
+      ) {
+        if (success) {
+          _clearForm();
+        }
+      });
     }
   }
 
@@ -418,10 +428,11 @@ class _AddOutwardScreenState extends State<AddOutwardScreen> {
                           } else {
                             divisonController.divisionList.clear();
                             divisonController.selectedDivisionVal?.value = '';
-                            CustomFlushbar.flushBarErrorMessage(
+                            Get.snackbar(
                               'Error',
                               'Invalid company selected',
-                              context,
+                              backgroundColor: AppColors.error,
+                              colorText: Colors.white,
                             );
                           }
                         }
