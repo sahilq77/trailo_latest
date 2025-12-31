@@ -32,7 +32,12 @@ class _ViewResultScreenState extends State<ViewResultScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         automaticallyImplyLeading: true,
-        // title: const Text('Result View'),
+        iconTheme: IconThemeData(color: Color(0xFF000000)),
+        title: const Text(
+          'File View',
+
+          style: TextStyle(color: Color(0xFF000000)),
+        ),
         elevation: 0,
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(1.0),
@@ -45,7 +50,39 @@ class _ViewResultScreenState extends State<ViewResultScreen> {
         pdfUrl!,
         placeholder: (progress) =>
             Center(child: CircularProgressIndicator(value: progress)),
-        errorWidget: (error) => Center(child: Text(error.toString())),
+        errorWidget: (error) {
+          String errorMessage = error.toString().toLowerCase();
+
+          if (errorMessage.contains('404')) {
+            return const Center(
+              child: Text('File not found', style: TextStyle(fontSize: 18)),
+            );
+          } else if (errorMessage.contains('403')) {
+            return const Center(
+              child: Text('Access denied', style: TextStyle(fontSize: 18)),
+            );
+          } else if (errorMessage.contains('500')) {
+            return const Center(
+              child: Text('Server error', style: TextStyle(fontSize: 18)),
+            );
+          } else if (errorMessage.contains('timeout') ||
+              errorMessage.contains('connection')) {
+            return const Center(
+              child: Text('Connection error', style: TextStyle(fontSize: 18)),
+            );
+          } else if (errorMessage.contains('network')) {
+            return const Center(
+              child: Text('Network error', style: TextStyle(fontSize: 18)),
+            );
+          } else {
+            return const Center(
+              child: Text(
+                'Unable to load file',
+                style: TextStyle(fontSize: 18),
+              ),
+            );
+          }
+        },
       ),
 
       floatingActionButton: Column(
