@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/sahil/trailo/linux"
+  "cmake.sourceDirectory": "D:/sahil/trailo/linux",
+  "dart.flutterSdkPath": ".fvm/versions/3.32.0"
 }
