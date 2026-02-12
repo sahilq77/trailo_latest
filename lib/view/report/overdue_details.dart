@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:trailo/controller/outward/completed_order_list_controller.dart';
-import 'package:trailo/model/completed_order/get_completed_order_list_response.dart';
+import 'package:trailo/controller/pending_overdue/pending_overdue_list_controller.dart';
 import 'package:trailo/model/pending_deliveries/get_peding_overdue_list_response.dart';
 import 'package:trailo/utility/app_routes.dart';
-import 'package:trailo/view/outward/completed_order/completed_order_list.dart';
-
 import '../../../utility/app_colors.dart';
 import '../../../utility/app_utility.dart';
 import '../../../utility/date_formater.dart';
@@ -22,7 +19,7 @@ class PendingOverdueDetail extends StatefulWidget {
 
 class _PendingOverdueDetailState extends State<PendingOverdueDetail> {
   PendingOverdueData? overdue;
-  final controller = Get.put(CompletedOrderListController());
+  final controller = Get.put(PendingOverdueListController());
   String? srNo; // Add variable to store serial number
 
   @override
