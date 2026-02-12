@@ -99,3 +99,6 @@ class Networkutility {
 }
 // static String csutomerLogin = "${baseUrl + "customer-login-app"}";
   // static int customerLoginApi = 37;
+
+  //<======================= API DOCUMENT ============================>
+  //https://docs.google.com/document/d/1NwKm1b3JVDHc6SPlByC6lAdlkHnOF3bhLZacYw-TaZk/edit?tab=t.0
