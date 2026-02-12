@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:trailo/controller/dashborad/dashboard_controller.dart';
+import 'package:trailo/controller/set_device_detail/set_device_detail_controller.dart';
 import 'package:trailo/utility/app_routes.dart';
 import 'package:trailo/utility/nodatascreen.dart';
 import 'package:trailo/view/sidebar/app_sidebar.dart';
@@ -23,6 +24,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final SetDeviceDetailsController setDeviceController = Get.put(
+    SetDeviceDetailsController(),
+  );
   final CompanyController companyController = Get.put(CompanyController());
   final DivsionController divisonController = Get.put(DivsionController());
   final DashboardController controller = Get.put(DashboardController());

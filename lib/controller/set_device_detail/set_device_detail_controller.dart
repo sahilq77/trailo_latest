@@ -12,6 +12,7 @@ import 'package:trailo/core/network/networkcall.dart';
 import 'package:trailo/core/urls.dart';
 import 'package:trailo/model/set_device/set_device_detail_response.dart';
 import 'package:trailo/utility/app_colors.dart';
+import 'package:trailo/utility/app_utility.dart';
 
 class SetDeviceDetailsController extends GetxController {
   var isLoading = false.obs;
@@ -44,6 +45,8 @@ class SetDeviceDetailsController extends GetxController {
       final permissionDetails = await _getPermissionStatus();
 
       final jsonBody = {
+        "employee_id": AppUtility.userID,
+        "user_type": AppUtility.userType,
         "device_id": deviceDetails["device_id"] ?? "unknown",
         "device_details": deviceDetails,
         "permission_details": permissionDetails,
@@ -65,8 +68,8 @@ class SetDeviceDetailsController extends GetxController {
         List<SetDeviceDetailResponse> response =
             setDeviceDetailResponseFromJson(jsonEncode(list));
 
-        if (response[0].status == true) {
-        } else if (response[0].status == false) {
+        if (response[0].status == "true") {
+        } else if (response[0].status == "false") {
           // Use actual error or message from API
         }
       } else {
@@ -81,7 +84,6 @@ class SetDeviceDetailsController extends GetxController {
         // );
       }
     } on NoInternetException catch (e) {
-    
       log('NoInternetException: ${e.message}');
       Get.snackbar(
         'Error',
@@ -90,7 +92,6 @@ class SetDeviceDetailsController extends GetxController {
         colorText: Colors.white,
       );
     } on TimeoutException catch (e) {
-    
       log('TimeoutException: ${e.message}');
       Get.snackbar(
         'Error',
@@ -99,7 +100,6 @@ class SetDeviceDetailsController extends GetxController {
         colorText: Colors.white,
       );
     } on HttpException catch (e) {
-  
       log('HttpException: ${e.message} (Code: ${e.statusCode})');
       Get.snackbar(
         'Error',
@@ -108,7 +108,6 @@ class SetDeviceDetailsController extends GetxController {
         colorText: Colors.white,
       );
     } on ParseException catch (e) {
-    
       log('ParseException: ${e.message}');
       Get.snackbar(
         'Error',
@@ -117,7 +116,6 @@ class SetDeviceDetailsController extends GetxController {
         colorText: Colors.white,
       );
     } catch (e) {
-  
       log('Unexpected error: $e');
       Get.snackbar(
         'Error',

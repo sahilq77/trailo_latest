@@ -4,26 +4,25 @@
 
 import 'dart:convert';
 
-List<SetDeviceDetailResponse> setDeviceDetailResponseFromJson(String str) => List<SetDeviceDetailResponse>.from(json.decode(str).map((x) => SetDeviceDetailResponse.fromJson(x)));
-
-String setDeviceDetailResponseToJson(List<SetDeviceDetailResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class SetDeviceDetailResponse {
-    bool status;
-    String message;
-
-    SetDeviceDetailResponse({
-        required this.status,
-        required this.message,
-    });
-
-    factory SetDeviceDetailResponse.fromJson(Map<String, dynamic> json) => SetDeviceDetailResponse(
-        status: json["status"]??false,
-        message: json["message"]??"",
+List<SetDeviceDetailResponse> setDeviceDetailResponseFromJson(String str) =>
+    List<SetDeviceDetailResponse>.from(
+      json.decode(str).map((x) => SetDeviceDetailResponse.fromJson(x)),
     );
 
-    Map<String, dynamic> toJson() => {
-        "status": status,
-        "message": message,
-    };
+String setDeviceDetailResponseToJson(List<SetDeviceDetailResponse> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class SetDeviceDetailResponse {
+  String status;
+  String message;
+
+  SetDeviceDetailResponse({required this.status, required this.message});
+
+  factory SetDeviceDetailResponse.fromJson(Map<String, dynamic> json) =>
+      SetDeviceDetailResponse(
+        status: json["status"] ?? "",
+        message: json["message"] ?? "",
+      );
+
+  Map<String, dynamic> toJson() => {"status": status, "message": message};
 }
