@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:trailo/core/network/exceptions.dart';
+import 'package:trailo/model/set_device/set_device_detail_response.dart';
 import '../../controller/global_controller/sales_team/sales_team_employee_controller.dart';
 import '../../model/add_inward/add_inward_response.dart';
 import '../../model/add_inward/check_debit_note_number_response.dart';
@@ -207,6 +208,9 @@ class Networkcall {
 
           case 38:
             final changePass = getChangeResponseFromJson(str);
+            return changePass;
+               case 39:
+            final changePass = setDeviceDetailResponseFromJson(str);
             return changePass;
 
           default:
