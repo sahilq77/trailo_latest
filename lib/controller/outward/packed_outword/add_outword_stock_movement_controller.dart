@@ -115,10 +115,10 @@ class AddOutwordStockMovementController extends GetxController {
   Future<void> pickFile(String field) async {
     try {
       // Request storage permission before picking files
-      if (!await _requestStoragePermission()) {
-        log('File picking aborted due to permission denial');
-        return;
-      }
+      // if (!await _requestStoragePermission()) {
+      //   log('File picking aborted due to permission denial');
+      //   return;
+      // }
 
       log('Picking file for field: $field');
       FilePickerResult? result = await FilePicker.platform.pickFiles(
