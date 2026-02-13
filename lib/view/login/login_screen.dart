@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:trailo/core/urls.dart';
 
 import '../../controller/login/login_controller.dart';
 import '../../utility/app_colors.dart';
@@ -51,6 +52,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: AppColors.primary,
                   ),
                 ),
+                if (Networkutility.baseUrl.contains("seekhelp"))
+                  Center(
+                    child: const Text(
+                      'Seekhelp Server',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 24),
                 const Text(
                   'Employee\'s Log In \nWelcome Back',
