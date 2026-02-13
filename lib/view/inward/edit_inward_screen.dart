@@ -76,6 +76,7 @@ class _EditInwardScreenState extends State<EditInwardScreen> {
   String? _claimTypeError;
   InwardListData? inwardid;
   int? srNo;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -225,7 +226,9 @@ class _EditInwardScreenState extends State<EditInwardScreen> {
       }
 
       if (mounted) {
-        setState(() {});
+        setState(() {
+          _isLoading = false;
+        });
       }
     } catch (e, stackTrace) {
       print('Error loading data: $e');
@@ -236,6 +239,11 @@ class _EditInwardScreenState extends State<EditInwardScreen> {
         backgroundColor: AppColors.error,
         colorText: Colors.white,
       );
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -418,312 +426,119 @@ class _EditInwardScreenState extends State<EditInwardScreen> {
           //   ),
           // ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUnfocus,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _sectionTitle("Inward Details"),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          readOnly: true,
-                          controller: receiptDateController,
-                          decoration: InputDecoration(
-                            label: RichText(
-                              text: TextSpan(
-                                text: 'Date Of Receipt ',
-                                style: TextStyle(color: Colors.black),
-                                children: [
-                                  TextSpan(
-                                    text: '*',
-                                    style: TextStyle(color: Colors.red),
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUnfocus,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _sectionTitle("Inward Details"),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                readOnly: true,
+                                controller: receiptDateController,
+                                decoration: InputDecoration(
+                                  label: RichText(
+                                    text: TextSpan(
+                                      text: 'Date Of Receipt ',
+                                      style: TextStyle(color: Colors.black),
+                                      children: [
+                                        TextSpan(
+                                          text: '*',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.calendar_today),
-                              onPressed: () => _selectReceiptDate(
-                                // Use new function
-                                context,
-                                receiptDateController,
-                                (value) => _dateOfReceipt = value,
-                              ),
-                            ),
-                          ),
-                          validator: (value) => value == null || value.isEmpty
-                              ? 'Please Select Date'
-                              : null,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: TextFormField(
-                          controller: inwardNumberController,
-                          inputFormatters: [SecureTextInputFormatter.deny()],
-                          decoration: InputDecoration(
-                            label: RichText(
-                              text: TextSpan(
-                                text: 'Inward No. ',
-                                style: TextStyle(color: Colors.black),
-                                children: [
-                                  TextSpan(
-                                    text: '*',
-                                    style: TextStyle(color: Colors.red),
+                                  suffixIcon: IconButton(
+                                    icon: const Icon(Icons.calendar_today),
+                                    onPressed: () => _selectReceiptDate(
+                                      // Use new function
+                                      context,
+                                      receiptDateController,
+                                      (value) => _dateOfReceipt = value,
+                                    ),
                                   ),
-                                ],
+                                ),
+                                validator: (value) =>
+                                    value == null || value.isEmpty
+                                    ? 'Please Select Date'
+                                    : null,
                               ),
                             ),
-                            suffixIcon: Icon(Icons.edit),
-                          ),
-                          onChanged: (value) {
-                            // print("flag ${checkInwardController.flag}");
-                            // checkInwardController.verifyInwardNumber(
-                            //   inwardNo: value,
-                            //   inwardID: inwardid!.id,
-                            //   context: context,
-                            // );
-                          },
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: TextFormField(
+                                controller: inwardNumberController,
+                                inputFormatters: [
+                                  SecureTextInputFormatter.deny(),
+                                ],
+                                decoration: InputDecoration(
+                                  label: RichText(
+                                    text: TextSpan(
+                                      text: 'Inward No. ',
+                                      style: TextStyle(color: Colors.black),
+                                      children: [
+                                        TextSpan(
+                                          text: '*',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  suffixIcon: Icon(Icons.edit),
+                                ),
+                                onChanged: (value) {
+                                  // print("flag ${checkInwardController.flag}");
+                                  // checkInwardController.verifyInwardNumber(
+                                  //   inwardNo: value,
+                                  //   inwardID: inwardid!.id,
+                                  //   context: context,
+                                  // );
+                                },
 
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter Inward Number';
-                            }
-                            //  else if (checkInwardController.flag.value ==
-                            //     "1") {
-                            //   return 'Inward Number Already Exists';
-                            // }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Obx(
-                    () => DropdownSearch<String>(
-                      popupProps: const PopupProps.menu(
-                        showSearchBox: true,
-                        showSelectedItems: true,
-                        searchFieldProps: TextFieldProps(
-                          decoration: InputDecoration(
-                            labelText: 'Search Company',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.search),
-                          ),
-                        ),
-                      ),
-                      items: companyController.getCompanyNames(),
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          label: RichText(
-                            text: const TextSpan(
-                              text: 'Select Company ',
-                              style: TextStyle(color: Colors.black),
-                              children: [
-                                TextSpan(
-                                  text: '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ],
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Enter Inward Number';
+                                  }
+                                  //  else if (checkInwardController.flag.value ==
+                                  //     "1") {
+                                  //   return 'Inward Number Already Exists';
+                                  // }
+                                  return null;
+                                },
+                              ),
                             ),
-                          ),
-                          border: OutlineInputBorder(),
+                          ],
                         ),
-                        baseStyle: const TextStyle(fontSize: 16),
-                      ),
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Please Select Company'
-                          : null,
-                      onChanged: (String? selectedCompanyName) async {
-                        if (selectedCompanyName != null) {
-                          companyController.selectedCompanyVal!.value =
-                              selectedCompanyName;
-                          final companyId = companyController.getCompanyId(
-                            selectedCompanyName,
-                          );
-                          setState(() {
-                            _companyID = companyId;
-                            _divisionID = null;
-                            divisonController.selectedDivisionVal!.value = '';
-                          });
-                          divisonController.divisionList.clear();
-                          if (companyId != null && companyId.isNotEmpty) {
-                            await divisonController.fetchDivison(
-                              context: context,
-                              comapnyID: companyId,
-                              forceFetch: true,
-                            );
-                          } else {
-                            Get.snackbar(
-                              'Error',
-                              'Invalid company selected',
-                              backgroundColor: AppColors.error,
-                              colorText: Colors.white,
-                            );
-                          }
-                        } else {
-                          companyController.selectedCompanyVal!.value = '';
-                          setState(() {
-                            _companyID = null;
-                          });
-                        }
-                      },
-                      selectedItem:
-                          companyController.selectedCompanyVal!.value.isNotEmpty
-                          ? companyController.selectedCompanyVal!.value
-                          : null,
-                      enabled: !companyController.isLoading.value,
-                      dropdownBuilder: (context, selectedItem) => Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          selectedItem ?? 'Select Company',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: companyController.isLoading.value
-                                ? Colors.grey
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Obx(
-                    () => DropdownSearch<String>(
-                      popupProps: const PopupProps.menu(
-                        showSearchBox: true,
-                        showSelectedItems: true,
-                        searchFieldProps: TextFieldProps(
-                          decoration: InputDecoration(
-                            labelText: 'Search Division',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      items: divisonController.getDivisionNames(),
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Please Select Division'
-                          : null,
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          label: RichText(
-                            text: const TextSpan(
-                              text: 'Select Division ',
-                              style: TextStyle(color: Colors.black),
-                              children: [
-                                TextSpan(
-                                  text: '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ],
-                            ),
-                          ),
-                          border: OutlineInputBorder(),
-                        ),
-                        baseStyle: const TextStyle(fontSize: 16),
-                      ),
-                      onChanged: (String? selectedDivisionName) {
-                        if (selectedDivisionName != null) {
-                          divisonController.selectedDivisionVal?.value =
-                              selectedDivisionName;
-                          setState(() {
-                            _divisionID = divisonController.getDivisionId(
-                              selectedDivisionName,
-                            );
-                          });
-                        } else {
-                          divisonController.selectedDivisionVal?.value = '';
-                          setState(() {
-                            _divisionID = null;
-                          });
-                        }
-                      },
-                      selectedItem:
-                          divisonController
-                              .selectedDivisionVal!
-                              .value
-                              .isNotEmpty
-                          ? divisonController.selectedDivisionVal?.value
-                          : null,
-                      enabled: !divisonController.isLoading.value,
-                      dropdownBuilder: (context, selectedItem) => Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          selectedItem ?? 'Select Division',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: divisonController.isLoading.value
-                                ? Colors.grey
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  _sectionTitle("Customer/Vendor Name *"),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Radio(
-                            value: '1',
-                            groupValue: _customerVendorType,
-                            activeColor: Colors.grey,
-                            onChanged: null,
-                          ),
-                          const Text('Customer'),
-                          Radio(
-                            value: '0',
-                            groupValue: _customerVendorType,
-                            activeColor: Colors.grey,
-                            onChanged: null,
-                          ),
-                          const Text('Vendor'),
-                        ],
-                      ),
-                      if (_customerVendorError != null)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0, top: 4.0),
-                          child: Text(
-                            _customerVendorError!,
-                            style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Obx(
-                    () => _customerVendorType == "1"
-                        ? DropdownSearch<String>(
+                        const SizedBox(height: 16),
+                        Obx(
+                          () => DropdownSearch<String>(
                             popupProps: const PopupProps.menu(
                               showSearchBox: true,
                               showSelectedItems: true,
                               searchFieldProps: TextFieldProps(
                                 decoration: InputDecoration(
-                                  labelText: 'Search Customer',
+                                  labelText: 'Search Company',
                                   border: OutlineInputBorder(),
+                                  prefixIcon: Icon(Icons.search),
                                 ),
                               ),
                             ),
-                            items: customerController.getCustomerNames(),
+                            items: companyController.getCompanyNames(),
                             dropdownDecoratorProps: DropDownDecoratorProps(
                               dropdownSearchDecoration: InputDecoration(
                                 label: RichText(
                                   text: const TextSpan(
-                                    text: 'Select Customer ',
+                                    text: 'Select Company ',
                                     style: TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
@@ -738,659 +553,934 @@ class _EditInwardScreenState extends State<EditInwardScreen> {
                               baseStyle: const TextStyle(fontSize: 16),
                             ),
                             validator: (value) => value == null || value.isEmpty
-                                ? 'Please Select Customer'
+                                ? 'Please Select Company'
                                 : null,
-                            onChanged: (String? selectedCustomerName) {
-                              if (selectedCustomerName != null && mounted) {
-                                customerController.selectedCustomerVal?.value =
-                                    selectedCustomerName;
+                            onChanged: (String? selectedCompanyName) async {
+                              if (selectedCompanyName != null) {
+                                companyController.selectedCompanyVal!.value =
+                                    selectedCompanyName;
+                                final companyId = companyController
+                                    .getCompanyId(selectedCompanyName);
                                 setState(() {
-                                  _customerID = customerController
-                                      .getCustomerId(selectedCustomerName);
-                                  _vendorID = null;
-                                  vendorController.selectedVendorVal?.value =
+                                  _companyID = companyId;
+                                  _divisionID = null;
+                                  divisonController.selectedDivisionVal!.value =
                                       '';
                                 });
-                              }
-                            },
-                            selectedItem:
-                                customerController
-                                    .selectedCustomerVal!
-                                    .value
-                                    .isNotEmpty
-                                ? customerController.selectedCustomerVal?.value
-                                : null,
-                            enabled: !customerController.isLoading.value,
-                            dropdownBuilder: (context, selectedItem) =>
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    selectedItem ?? 'Select Customer',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: customerController.isLoading.value
-                                          ? Colors.grey
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                          )
-                        : DropdownSearch<String>(
-                            popupProps: const PopupProps.menu(
-                              showSearchBox: true,
-                              showSelectedItems: true,
-                              searchFieldProps: TextFieldProps(
-                                decoration: InputDecoration(
-                                  labelText: 'Search Vendor',
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
-                            ),
-                            items: vendorController.getVendorNames(),
-                            dropdownDecoratorProps: DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                label: RichText(
-                                  text: const TextSpan(
-                                    text: 'Select Vendor ',
-                                    style: TextStyle(color: Colors.black),
-                                    children: [
-                                      TextSpan(
-                                        text: '*',
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                border: OutlineInputBorder(),
-                              ),
-                              baseStyle: const TextStyle(fontSize: 16),
-                            ),
-                            validator: (value) => value == null || value.isEmpty
-                                ? 'Please Select Vendor'
-                                : null,
-                            onChanged: (String? selectedVendorName) {
-                              if (selectedVendorName != null && mounted) {
-                                vendorController.selectedVendorVal?.value =
-                                    selectedVendorName;
-                                setState(() {
-                                  _vendorID = vendorController.getVendorId(
-                                    selectedVendorName,
+                                divisonController.divisionList.clear();
+                                if (companyId != null && companyId.isNotEmpty) {
+                                  await divisonController.fetchDivison(
+                                    context: context,
+                                    comapnyID: companyId,
+                                    forceFetch: true,
                                   );
-                                  _customerID = null;
-                                  customerController
-                                          .selectedCustomerVal
-                                          ?.value =
-                                      '';
+                                } else {
+                                  Get.snackbar(
+                                    'Error',
+                                    'Invalid company selected',
+                                    backgroundColor: AppColors.error,
+                                    colorText: Colors.white,
+                                  );
+                                }
+                              } else {
+                                companyController.selectedCompanyVal!.value =
+                                    '';
+                                setState(() {
+                                  _companyID = null;
                                 });
                               }
                             },
                             selectedItem:
-                                vendorController
-                                    .selectedVendorVal!
+                                companyController
+                                    .selectedCompanyVal!
                                     .value
                                     .isNotEmpty
-                                ? vendorController.selectedVendorVal?.value
+                                ? companyController.selectedCompanyVal!.value
                                 : null,
-                            enabled: !vendorController.isLoading.value,
+                            enabled: !companyController.isLoading.value,
                             dropdownBuilder: (context, selectedItem) =>
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    selectedItem ?? 'Select Vendor',
+                                    selectedItem ?? 'Select Company',
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: vendorController.isLoading.value
+                                      color: companyController.isLoading.value
                                           ? Colors.grey
                                           : Colors.black,
                                     ),
                                   ),
                                 ),
                           ),
-                  ),
-                  const SizedBox(height: 10),
-                  if (_customerVendorType == "1") ...[
-                    TextFormField(
-                      controller: debitNoteController,
-                      inputFormatters: [SecureTextInputFormatter.deny()],
-                      decoration: InputDecoration(
-                        labelText: 'Debit Note Number',
-                      ),
-                      onChanged: (value) async {
-                        // await checkDebitNoteNumberController
-                        //     .verifyInvoiceNumber(
-                        //       invNo: value,
-                        //       inwardID: inwardid!.id,
-                        //       context: context,
-                        //     );
-                      },
-                      onSaved: (value) async {
-                        // await checkDebitNoteNumberController
-                        //     .verifyInvoiceNumber(
-                        //       invNo: value!,
-                        //       inwardID: "",
-                        //       context: context,
-                        //     );
-                      },
-                      validator: (value) {
-                        // if (checkDebitNoteNumberController.flag == "1") {
-                        //   return 'Debit Note Number Already Exists';
-                        // }
-                        // return null;
-                      },
-                    ),
-                  ] else ...[
-                    TextFormField(
-                      controller: invoiceNumberController,
-                      inputFormatters: [SecureTextInputFormatter.deny()],
-                      decoration: InputDecoration(
-                        labelText: "Invoice Number ",
-                        // label: RichText(
-                        //   text: TextSpan(
-                        //     text: 'Invoice Number ',
-                        //     style: TextStyle(color: Colors.black),
-                        //     children: [
-                        //       // TextSpan(
-                        //       //   text: '*',
-                        //       //   style: TextStyle(color: Colors.red),
-                        //       // ),
-                        //     ],
-                        //   ),
-                        // ),
-                      ),
-                      onChanged: (value) async {
-                        // await checkVennderInvoiceController.verifyInvoiceNumber(
-                        //   invNo: value,
-                        //   inwardID: "",
-                        //   context: context,
-                        // );
-                      },
-                      onSaved: (value) async {
-                        // await checkVennderInvoiceController.verifyInvoiceNumber(
-                        //   invNo: value!,
-                        //   inwardID: inwardid!.id,
-                        //   context: context,
-                        // );
-                      },
-                      validator: (value) {
-                        // if (checkVennderInvoiceController.flag == "1") {
-                        //   return 'Invoice Number Already Exists';
-                        // }
-                        // return null;
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      readOnly: true,
-                      onTap: () => _selectDate(
-                        context,
-                        invoiceDateController,
-                        (value) => _invoiceDate = value,
-                      ),
-                      controller: invoiceDateController,
-                      decoration: InputDecoration(
-                        labelText: "Invoice Date",
-                        // label: RichText(
-                        //   text: TextSpan(
-                        //     text: 'Invoice Date ',
-                        //     style: TextStyle(color: Colors.black),
-                        //     children: [
-                        //       // TextSpan(
-                        //       //   text: '*',
-                        //       //   style: TextStyle(color: Colors.red),
-                        //       // ),
-                        //     ],
-                        //   ),
-                        // ),
-                        suffixIcon: Icon(Icons.calendar_today),
-                      ),
-                      // validator: (value) => value == null || value.isEmpty
-                      //     ? 'Please Select Invoice Date'
-                      //     : null,
-                    ),
-                  ],
-                  const SizedBox(height: 20),
-                  _sectionTitle("LR Number & Transport"),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: lrController,
-                    inputFormatters: [SecureTextInputFormatter.deny()],
-                    decoration: const InputDecoration(
-                      labelText: 'LR Number',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Obx(
-                    () => DropdownSearch<String>(
-                      popupProps: const PopupProps.menu(
-                        showSearchBox: true,
-                        showSelectedItems: true,
-                        searchFieldProps: TextFieldProps(
-                          decoration: InputDecoration(
-                            labelText: 'Search Transport',
-                            border: OutlineInputBorder(),
-                          ),
                         ),
-                      ),
-                      items: transportController.getTransportNames(),
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          label: RichText(
-                            text: const TextSpan(
-                              text: 'Select Transport ',
-                              style: TextStyle(color: Colors.black),
-                              children: [
-                                TextSpan(
-                                  text: '*',
-                                  style: TextStyle(color: Colors.red),
+                        const SizedBox(height: 16),
+                        Obx(
+                          () => DropdownSearch<String>(
+                            popupProps: const PopupProps.menu(
+                              showSearchBox: true,
+                              showSelectedItems: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  labelText: 'Search Division',
+                                  border: OutlineInputBorder(),
                                 ),
-                              ],
-                            ),
-                          ),
-                          border: OutlineInputBorder(),
-                        ),
-                        baseStyle: const TextStyle(fontSize: 16),
-                      ),
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Please Select Transport'
-                          : null,
-                      onChanged: (String? selectedTransportName) {
-                        if (selectedTransportName != null && mounted) {
-                          transportController.selectedTransportVal?.value =
-                              selectedTransportName;
-                          setState(() {
-                            _transportID = transportController.getTransportId(
-                              selectedTransportName,
-                            );
-                          });
-                        }
-                      },
-                      selectedItem:
-                          transportController
-                              .selectedTransportVal!
-                              .value
-                              .isNotEmpty
-                          ? transportController.selectedTransportVal?.value
-                          : null,
-                      enabled: !transportController.isLoading.value,
-                      dropdownBuilder: (context, selectedItem) => Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          selectedItem ?? 'Select Transport',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: transportController.isLoading.value
-                                ? Colors.grey
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    readOnly: true,
-                    onTap: () => _selectDate(
-                      context,
-                      lrDateController,
-                      (value) => _lrDate = value,
-                    ),
-                    controller: lrDateController,
-                    decoration: InputDecoration(
-                      labelText: 'LR Date',
-                      suffixIcon: Icon(Icons.calendar_today),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: freightAmtController,
-                    inputFormatters: [
-                      SecureTextInputFormatter.deny(),
-                      FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d*\.?\d{0,2}'),
-                      ),
-                    ],
-                    decoration: InputDecoration(labelText: 'Freight Amount'),
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    controller: freightAmtController,
-                    inputFormatters: [
-                      SecureTextInputFormatter.deny(),
-                      FilteringTextInputFormatter.allow(
-                        RegExp(r'^\d*\.?\d{0,2}'),
-                      ),
-                    ],
-                    decoration: const InputDecoration(
-                      labelText: 'Freight Amount',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 16),
-                  Obx(
-                    () => DropdownSearch<String>(
-                      popupProps: const PopupProps.menu(
-                        showSearchBox: true,
-                        showSelectedItems: true,
-                        searchFieldProps: TextFieldProps(
-                          decoration: InputDecoration(
-                            labelText: 'Search Status',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.search),
-                          ),
-                        ),
-                      ),
-                      items: statusController.getStatusNames(),
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          label: RichText(
-                            text: const TextSpan(
-                              text: 'Select Status ',
-                              style: TextStyle(color: Colors.black),
-                              children: [
-                                TextSpan(
-                                  text: '*',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ],
-                            ),
-                          ),
-                          border: OutlineInputBorder(),
-                        ),
-                        baseStyle: const TextStyle(fontSize: 16),
-                      ),
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Please Select Status'
-                          : null,
-                      onChanged: (String? selectedStatusName) {
-                        if (selectedStatusName != null) {
-                          statusController.selectedStatusVal!.value =
-                              selectedStatusName;
-                          setState(() {
-                            _statusID = statusController.getStatusId(
-                              selectedStatusName,
-                            );
-                          });
-                        } else {
-                          statusController.selectedStatusVal!.value = '';
-                          setState(() {
-                            _statusID = null;
-                          });
-                        }
-                      },
-                      selectedItem:
-                          statusController.selectedStatusVal!.value.isNotEmpty
-                          ? statusController.selectedStatusVal!.value
-                          : null,
-                      enabled: !statusController.isLoading.value,
-                      dropdownBuilder: (context, selectedItem) => Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          selectedItem ?? 'Select Status',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: statusController.isLoading.value
-                                ? Colors.grey
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          RichText(
-                            text: const TextSpan(
-                              text: 'Claim ',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
                               ),
-                              children: [
-                                TextSpan(
-                                  text: '*',
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
+                            ),
+                            items: divisonController.getDivisionNames(),
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please Select Division'
+                                : null,
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              dropdownSearchDecoration: InputDecoration(
+                                label: RichText(
+                                  text: const TextSpan(
+                                    text: 'Select Division ',
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                        text: '*',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
+                                border: OutlineInputBorder(),
+                              ),
+                              baseStyle: const TextStyle(fontSize: 16),
                             ),
+                            onChanged: (String? selectedDivisionName) {
+                              if (selectedDivisionName != null) {
+                                divisonController.selectedDivisionVal?.value =
+                                    selectedDivisionName;
+                                setState(() {
+                                  _divisionID = divisonController.getDivisionId(
+                                    selectedDivisionName,
+                                  );
+                                });
+                              } else {
+                                divisonController.selectedDivisionVal?.value =
+                                    '';
+                                setState(() {
+                                  _divisionID = null;
+                                });
+                              }
+                            },
+                            selectedItem:
+                                divisonController
+                                    .selectedDivisionVal!
+                                    .value
+                                    .isNotEmpty
+                                ? divisonController.selectedDivisionVal?.value
+                                : null,
+                            enabled: !divisonController.isLoading.value,
+                            dropdownBuilder: (context, selectedItem) =>
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    selectedItem ?? 'Select Division',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: divisonController.isLoading.value
+                                          ? Colors.grey
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
                           ),
-                          Expanded(
-                            child: Row(
+                        ),
+                        const SizedBox(height: 20),
+                        _sectionTitle("Customer/Vendor Name *"),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               children: [
                                 Radio(
                                   value: '1',
-                                  groupValue: _claimType,
-                                  onChanged: (value) => setState(() {
-                                    _claimType = value as String;
-                                    _claimTypeError = null;
-                                  }),
+                                  groupValue: _customerVendorType,
+                                  activeColor: Colors.grey,
+                                  onChanged: null,
                                 ),
-                                const Text('Yes'),
+                                const Text('Customer'),
                                 Radio(
                                   value: '0',
-                                  groupValue: _claimType,
-                                  onChanged: (value) => setState(() {
-                                    _claimType = value as String;
-                                    _claimTypeError = null;
-                                  }),
+                                  groupValue: _customerVendorType,
+                                  activeColor: Colors.grey,
+                                  onChanged: null,
                                 ),
-                                const Text('No'),
+                                const Text('Vendor'),
                               ],
                             ),
+                            if (_customerVendorError != null)
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16.0,
+                                  top: 4.0,
+                                ),
+                                child: Text(
+                                  _customerVendorError!,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Obx(
+                          () => _customerVendorType == "1"
+                              ? DropdownSearch<String>(
+                                  popupProps: const PopupProps.menu(
+                                    showSearchBox: true,
+                                    showSelectedItems: true,
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        labelText: 'Search Customer',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                    ),
+                                  ),
+                                  items: customerController.getCustomerNames(),
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                              label: RichText(
+                                                text: const TextSpan(
+                                                  text: 'Select Customer ',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: '*',
+                                                      style: TextStyle(
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              border: OutlineInputBorder(),
+                                            ),
+                                        baseStyle: const TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                  validator: (value) =>
+                                      value == null || value.isEmpty
+                                      ? 'Please Select Customer'
+                                      : null,
+                                  onChanged: (String? selectedCustomerName) {
+                                    if (selectedCustomerName != null &&
+                                        mounted) {
+                                      customerController
+                                              .selectedCustomerVal
+                                              ?.value =
+                                          selectedCustomerName;
+                                      setState(() {
+                                        _customerID = customerController
+                                            .getCustomerId(
+                                              selectedCustomerName,
+                                            );
+                                        _vendorID = null;
+                                        vendorController
+                                                .selectedVendorVal
+                                                ?.value =
+                                            '';
+                                      });
+                                    }
+                                  },
+                                  selectedItem:
+                                      customerController
+                                          .selectedCustomerVal!
+                                          .value
+                                          .isNotEmpty
+                                      ? customerController
+                                            .selectedCustomerVal
+                                            ?.value
+                                      : null,
+                                  enabled: !customerController.isLoading.value,
+                                  dropdownBuilder: (context, selectedItem) =>
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          selectedItem ?? 'Select Customer',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color:
+                                                customerController
+                                                    .isLoading
+                                                    .value
+                                                ? Colors.grey
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                )
+                              : DropdownSearch<String>(
+                                  popupProps: const PopupProps.menu(
+                                    showSearchBox: true,
+                                    showSelectedItems: true,
+                                    searchFieldProps: TextFieldProps(
+                                      decoration: InputDecoration(
+                                        labelText: 'Search Vendor',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                    ),
+                                  ),
+                                  items: vendorController.getVendorNames(),
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                              label: RichText(
+                                                text: const TextSpan(
+                                                  text: 'Select Vendor ',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: '*',
+                                                      style: TextStyle(
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              border: OutlineInputBorder(),
+                                            ),
+                                        baseStyle: const TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                  validator: (value) =>
+                                      value == null || value.isEmpty
+                                      ? 'Please Select Vendor'
+                                      : null,
+                                  onChanged: (String? selectedVendorName) {
+                                    if (selectedVendorName != null && mounted) {
+                                      vendorController
+                                              .selectedVendorVal
+                                              ?.value =
+                                          selectedVendorName;
+                                      setState(() {
+                                        _vendorID = vendorController
+                                            .getVendorId(selectedVendorName);
+                                        _customerID = null;
+                                        customerController
+                                                .selectedCustomerVal
+                                                ?.value =
+                                            '';
+                                      });
+                                    }
+                                  },
+                                  selectedItem:
+                                      vendorController
+                                          .selectedVendorVal!
+                                          .value
+                                          .isNotEmpty
+                                      ? vendorController
+                                            .selectedVendorVal
+                                            ?.value
+                                      : null,
+                                  enabled: !vendorController.isLoading.value,
+                                  dropdownBuilder: (context, selectedItem) =>
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          selectedItem ?? 'Select Vendor',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color:
+                                                vendorController.isLoading.value
+                                                ? Colors.grey
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                ),
+                        ),
+                        const SizedBox(height: 10),
+                        if (_customerVendorType == "1") ...[
+                          TextFormField(
+                            controller: debitNoteController,
+                            inputFormatters: [SecureTextInputFormatter.deny()],
+                            decoration: InputDecoration(
+                              labelText: 'Debit Note Number',
+                            ),
+                            onChanged: (value) async {
+                              // await checkDebitNoteNumberController
+                              //     .verifyInvoiceNumber(
+                              //       invNo: value,
+                              //       inwardID: inwardid!.id,
+                              //       context: context,
+                              //     );
+                            },
+                            onSaved: (value) async {
+                              // await checkDebitNoteNumberController
+                              //     .verifyInvoiceNumber(
+                              //       invNo: value!,
+                              //       inwardID: "",
+                              //       context: context,
+                              //     );
+                            },
+                            validator: (value) {
+                              // if (checkDebitNoteNumberController.flag == "1") {
+                              //   return 'Debit Note Number Already Exists';
+                              // }
+                              // return null;
+                            },
+                          ),
+                        ] else ...[
+                          TextFormField(
+                            controller: invoiceNumberController,
+                            inputFormatters: [SecureTextInputFormatter.deny()],
+                            decoration: InputDecoration(
+                              labelText: "Invoice Number ",
+                              // label: RichText(
+                              //   text: TextSpan(
+                              //     text: 'Invoice Number ',
+                              //     style: TextStyle(color: Colors.black),
+                              //     children: [
+                              //       // TextSpan(
+                              //       //   text: '*',
+                              //       //   style: TextStyle(color: Colors.red),
+                              //       // ),
+                              //     ],
+                              //   ),
+                              // ),
+                            ),
+                            onChanged: (value) async {
+                              // await checkVennderInvoiceController.verifyInvoiceNumber(
+                              //   invNo: value,
+                              //   inwardID: "",
+                              //   context: context,
+                              // );
+                            },
+                            onSaved: (value) async {
+                              // await checkVennderInvoiceController.verifyInvoiceNumber(
+                              //   invNo: value!,
+                              //   inwardID: inwardid!.id,
+                              //   context: context,
+                              // );
+                            },
+                            validator: (value) {
+                              // if (checkVennderInvoiceController.flag == "1") {
+                              //   return 'Invoice Number Already Exists';
+                              // }
+                              // return null;
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          TextFormField(
+                            readOnly: true,
+                            onTap: () => _selectDate(
+                              context,
+                              invoiceDateController,
+                              (value) => _invoiceDate = value,
+                            ),
+                            controller: invoiceDateController,
+                            decoration: InputDecoration(
+                              labelText: "Invoice Date",
+                              // label: RichText(
+                              //   text: TextSpan(
+                              //     text: 'Invoice Date ',
+                              //     style: TextStyle(color: Colors.black),
+                              //     children: [
+                              //       // TextSpan(
+                              //       //   text: '*',
+                              //       //   style: TextStyle(color: Colors.red),
+                              //       // ),
+                              //     ],
+                              //   ),
+                              // ),
+                              suffixIcon: Icon(Icons.calendar_today),
+                            ),
+                            // validator: (value) => value == null || value.isEmpty
+                            //     ? 'Please Select Invoice Date'
+                            //     : null,
                           ),
                         ],
-                      ),
-                      if (_claimTypeError != null)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0, top: 4.0),
-                          child: Text(
-                            _claimTypeError!,
-                            style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 12,
+                        const SizedBox(height: 20),
+                        _sectionTitle("LR Number & Transport"),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: lrController,
+                          inputFormatters: [SecureTextInputFormatter.deny()],
+                          decoration: const InputDecoration(
+                            labelText: 'LR Number',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Obx(
+                          () => DropdownSearch<String>(
+                            popupProps: const PopupProps.menu(
+                              showSearchBox: true,
+                              showSelectedItems: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  labelText: 'Search Transport',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                            items: transportController.getTransportNames(),
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              dropdownSearchDecoration: InputDecoration(
+                                label: RichText(
+                                  text: const TextSpan(
+                                    text: 'Select Transport ',
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                        text: '*',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                border: OutlineInputBorder(),
+                              ),
+                              baseStyle: const TextStyle(fontSize: 16),
+                            ),
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please Select Transport'
+                                : null,
+                            onChanged: (String? selectedTransportName) {
+                              if (selectedTransportName != null && mounted) {
+                                transportController
+                                        .selectedTransportVal
+                                        ?.value =
+                                    selectedTransportName;
+                                setState(() {
+                                  _transportID = transportController
+                                      .getTransportId(selectedTransportName);
+                                });
+                              }
+                            },
+                            selectedItem:
+                                transportController
+                                    .selectedTransportVal!
+                                    .value
+                                    .isNotEmpty
+                                ? transportController
+                                      .selectedTransportVal
+                                      ?.value
+                                : null,
+                            enabled: !transportController.isLoading.value,
+                            dropdownBuilder: (context, selectedItem) =>
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    selectedItem ?? 'Select Transport',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: transportController.isLoading.value
+                                          ? Colors.grey
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          readOnly: true,
+                          onTap: () => _selectDate(
+                            context,
+                            lrDateController,
+                            (value) => _lrDate = value,
+                          ),
+                          controller: lrDateController,
+                          decoration: InputDecoration(
+                            labelText: 'LR Date',
+                            suffixIcon: Icon(Icons.calendar_today),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: freightAmtController,
+                          inputFormatters: [
+                            SecureTextInputFormatter.deny(),
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d*\.?\d{0,2}'),
+                            ),
+                          ],
+                          decoration: InputDecoration(
+                            labelText: 'Freight Amount',
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: freightAmtController,
+                          inputFormatters: [
+                            SecureTextInputFormatter.deny(),
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'^\d*\.?\d{0,2}'),
+                            ),
+                          ],
+                          decoration: const InputDecoration(
+                            labelText: 'Freight Amount',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                        const SizedBox(height: 16),
+                        Obx(
+                          () => DropdownSearch<String>(
+                            popupProps: const PopupProps.menu(
+                              showSearchBox: true,
+                              showSelectedItems: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  labelText: 'Search Status',
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Icon(Icons.search),
+                                ),
+                              ),
+                            ),
+                            items: statusController.getStatusNames(),
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              dropdownSearchDecoration: InputDecoration(
+                                label: RichText(
+                                  text: const TextSpan(
+                                    text: 'Select Status ',
+                                    style: TextStyle(color: Colors.black),
+                                    children: [
+                                      TextSpan(
+                                        text: '*',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                border: OutlineInputBorder(),
+                              ),
+                              baseStyle: const TextStyle(fontSize: 16),
+                            ),
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please Select Status'
+                                : null,
+                            onChanged: (String? selectedStatusName) {
+                              if (selectedStatusName != null) {
+                                statusController.selectedStatusVal!.value =
+                                    selectedStatusName;
+                                setState(() {
+                                  _statusID = statusController.getStatusId(
+                                    selectedStatusName,
+                                  );
+                                });
+                              } else {
+                                statusController.selectedStatusVal!.value = '';
+                                setState(() {
+                                  _statusID = null;
+                                });
+                              }
+                            },
+                            selectedItem:
+                                statusController
+                                    .selectedStatusVal!
+                                    .value
+                                    .isNotEmpty
+                                ? statusController.selectedStatusVal!.value
+                                : null,
+                            enabled: !statusController.isLoading.value,
+                            dropdownBuilder: (context, selectedItem) =>
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    selectedItem ?? 'Select Status',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: statusController.isLoading.value
+                                          ? Colors.grey
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                RichText(
+                                  text: const TextSpan(
+                                    text: 'Claim ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: '*',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Radio(
+                                        value: '1',
+                                        groupValue: _claimType,
+                                        onChanged: (value) => setState(() {
+                                          _claimType = value as String;
+                                          _claimTypeError = null;
+                                        }),
+                                      ),
+                                      const Text('Yes'),
+                                      Radio(
+                                        value: '0',
+                                        groupValue: _claimType,
+                                        onChanged: (value) => setState(() {
+                                          _claimType = value as String;
+                                          _claimTypeError = null;
+                                        }),
+                                      ),
+                                      const Text('No'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (_claimTypeError != null)
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 16.0,
+                                  top: 4.0,
+                                ),
+                                child: Text(
+                                  _claimTypeError!,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        _sectionTitle("Document Upload"),
+                        const SizedBox(height: 10),
+                        Column(
+                          children: [
+                            _buildFilePicker('LR Copy', 'lr_copy'),
+                            Obx(
+                              () => SizedBox(
+                                child: controller.lrCopyFile.value == null
+                                    ? _viewButton("View", () {
+                                        try {
+                                          if (inwardid!.lrCopy == null ||
+                                              inwardid!.lrCopy!.isEmpty) {
+                                            // Get.snackbar(
+                                            //   'Error',
+                                            //   'No LR Copy available to view',
+                                            // );
+                                            return;
+                                          }
+
+                                          final filePath = inwardid!.lrCopy
+                                              .toLowerCase();
+                                          final url =
+                                              '${inwardListController.url.value}${inwardid!.lrCopy}';
+
+                                          if (filePath.endsWith('.pdf')) {
+                                            Get.toNamed(
+                                              AppRoutes.viewpdf,
+                                              arguments: url,
+                                            );
+                                          } else if (filePath.endsWith(
+                                                '.jpg',
+                                              ) ||
+                                              filePath.endsWith('.png') ||
+                                              filePath.endsWith('.jpeg')) {
+                                            Get.toNamed(
+                                              AppRoutes.viewImage,
+                                              arguments: url,
+                                            );
+                                          } else {
+                                            // Get.snackbar(
+                                            //   'Error',
+                                            //   'Unsupported file format for LR Copy',
+                                            // );
+                                          }
+                                        } catch (e) {
+                                          // Get.snackbar('Error', 'Failed to open LR Copy');
+                                        }
+                                      })
+                                    : SizedBox.shrink(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (_customerVendorType == "1")
+                          Column(
+                            children: [
+                              _buildFilePicker(
+                                'Debit Note Copy',
+                                'debit_note_copy',
+                              ),
+                              Obx(
+                                () => SizedBox(
+                                  child:
+                                      controller.debitNoteCopyFile.value == null
+                                      ? _viewButton("View", () {
+                                          try {
+                                            if (inwardid!.debitNoteCopy ==
+                                                    null ||
+                                                inwardid!
+                                                    .debitNoteCopy
+                                                    .isEmpty) {
+                                              // Get.snackbar(
+                                              //   'Error',
+                                              //   'No Debit Note Copy available to view',
+                                              // );
+                                              return;
+                                            }
+
+                                            final filePath = inwardid!
+                                                .debitNoteCopy
+                                                .toLowerCase();
+                                            final url =
+                                                '${inwardListController.url.value}${inwardid!.debitNoteCopy}';
+
+                                            if (filePath.endsWith('.pdf')) {
+                                              Get.toNamed(
+                                                AppRoutes.viewpdf,
+                                                arguments: url,
+                                              );
+                                            } else if (filePath.endsWith(
+                                                  '.jpg',
+                                                ) ||
+                                                filePath.endsWith('.png') ||
+                                                filePath.endsWith('.jpeg')) {
+                                              Get.toNamed(
+                                                AppRoutes.viewImage,
+                                                arguments: url,
+                                              );
+                                            } else {
+                                              // Get.snackbar(
+                                              //   'Error',
+                                              //   'Unsupported file format for Debit Note Copy',
+                                              // );
+                                            }
+                                          } catch (e) {
+                                            // Get.snackbar(
+                                            //   'Error',
+                                            //   'Failed to open Debit Note Copy',
+                                            // );
+                                          }
+                                        })
+                                      : SizedBox.shrink(),
+                                ),
+                              ),
+                            ],
+                          )
+                        else
+                          Column(
+                            children: [
+                              _buildFilePicker('Invoice Copy', 'invoice_copy'),
+                              Obx(
+                                () => SizedBox(
+                                  child:
+                                      controller.invoiceCopyFile.value == null
+                                      ? _viewButton("View", () {
+                                          try {
+                                            if (inwardid!.invoiceCopy == null ||
+                                                inwardid!
+                                                    .invoiceCopy!
+                                                    .isEmpty) {
+                                              // Get.snackbar(
+                                              //   'Error',
+                                              //   'No Invoice Copy available to view',
+                                              // );
+                                              return;
+                                            }
+
+                                            final filePath = inwardid!
+                                                .invoiceCopy!
+                                                .toLowerCase();
+                                            final url =
+                                                '${inwardListController.url.value}${inwardid!.invoiceCopy}';
+
+                                            if (filePath.endsWith('.pdf')) {
+                                              Get.toNamed(
+                                                AppRoutes.viewpdf,
+                                                arguments: url,
+                                              );
+                                            } else if (filePath.endsWith(
+                                                  '.jpg',
+                                                ) ||
+                                                filePath.endsWith('.png') ||
+                                                filePath.endsWith('.jpeg')) {
+                                              Get.toNamed(
+                                                AppRoutes.viewImage,
+                                                arguments: url,
+                                              );
+                                            } else {
+                                              // Get.snackbar(
+                                              //   'Error',
+                                              //   'Unsupported file format for Invoice Copy',
+                                              // );
+                                            }
+                                          } catch (e) {
+                                            //  Get.snackbar('Error', 'Failed to open Invoice Copy');
+                                          }
+                                        })
+                                      : SizedBox.shrink(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        const SizedBox(height: 20),
+                        Center(
+                          child: Obx(
+                            () => ElevatedButton(
+                              onPressed: controller.isLoading.value
+                                  ? null
+                                  : () {
+                                      _submitForm();
+                                    },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                  vertical: 12,
+                                ),
+                              ),
+                              child: controller.isLoading.value
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                  : const Text(
+                                      'Submit',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  _sectionTitle("Document Upload"),
-                  const SizedBox(height: 10),
-                  Column(
-                    children: [
-                      _buildFilePicker('LR Copy', 'lr_copy'),
-                      Obx(
-                        () => SizedBox(
-                          child: controller.lrCopyFile.value == null
-                              ? _viewButton("View", () {
-                                  try {
-                                    if (inwardid!.lrCopy == null ||
-                                        inwardid!.lrCopy!.isEmpty) {
-                                      // Get.snackbar(
-                                      //   'Error',
-                                      //   'No LR Copy available to view',
-                                      // );
-                                      return;
-                                    }
-
-                                    final filePath = inwardid!.lrCopy
-                                        .toLowerCase();
-                                    final url =
-                                        '${inwardListController.url.value}${inwardid!.lrCopy}';
-
-                                    if (filePath.endsWith('.pdf')) {
-                                      Get.toNamed(
-                                        AppRoutes.viewpdf,
-                                        arguments: url,
-                                      );
-                                    } else if (filePath.endsWith('.jpg') ||
-                                        filePath.endsWith('.png') ||
-                                        filePath.endsWith('.jpeg')) {
-                                      Get.toNamed(
-                                        AppRoutes.viewImage,
-                                        arguments: url,
-                                      );
-                                    } else {
-                                      // Get.snackbar(
-                                      //   'Error',
-                                      //   'Unsupported file format for LR Copy',
-                                      // );
-                                    }
-                                  } catch (e) {
-                                    // Get.snackbar('Error', 'Failed to open LR Copy');
-                                  }
-                                })
-                              : SizedBox.shrink(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (_customerVendorType == "1")
-                    Column(
-                      children: [
-                        _buildFilePicker('Debit Note Copy', 'debit_note_copy'),
-                        Obx(
-                          () => SizedBox(
-                            child: controller.debitNoteCopyFile.value == null
-                                ? _viewButton("View", () {
-                                    try {
-                                      if (inwardid!.debitNoteCopy == null ||
-                                          inwardid!.debitNoteCopy.isEmpty) {
-                                        // Get.snackbar(
-                                        //   'Error',
-                                        //   'No Debit Note Copy available to view',
-                                        // );
-                                        return;
-                                      }
-
-                                      final filePath = inwardid!.debitNoteCopy
-                                          .toLowerCase();
-                                      final url =
-                                          '${inwardListController.url.value}${inwardid!.debitNoteCopy}';
-
-                                      if (filePath.endsWith('.pdf')) {
-                                        Get.toNamed(
-                                          AppRoutes.viewpdf,
-                                          arguments: url,
-                                        );
-                                      } else if (filePath.endsWith('.jpg') ||
-                                          filePath.endsWith('.png') ||
-                                          filePath.endsWith('.jpeg')) {
-                                        Get.toNamed(
-                                          AppRoutes.viewImage,
-                                          arguments: url,
-                                        );
-                                      } else {
-                                        // Get.snackbar(
-                                        //   'Error',
-                                        //   'Unsupported file format for Debit Note Copy',
-                                        // );
-                                      }
-                                    } catch (e) {
-                                      // Get.snackbar(
-                                      //   'Error',
-                                      //   'Failed to open Debit Note Copy',
-                                      // );
-                                    }
-                                  })
-                                : SizedBox.shrink(),
-                          ),
-                        ),
-                      ],
-                    )
-                  else
-                    Column(
-                      children: [
-                        _buildFilePicker('Invoice Copy', 'invoice_copy'),
-                        Obx(
-                          () => SizedBox(
-                            child: controller.invoiceCopyFile.value == null
-                                ? _viewButton("View", () {
-                                    try {
-                                      if (inwardid!.invoiceCopy == null ||
-                                          inwardid!.invoiceCopy!.isEmpty) {
-                                        // Get.snackbar(
-                                        //   'Error',
-                                        //   'No Invoice Copy available to view',
-                                        // );
-                                        return;
-                                      }
-
-                                      final filePath = inwardid!.invoiceCopy!
-                                          .toLowerCase();
-                                      final url =
-                                          '${inwardListController.url.value}${inwardid!.invoiceCopy}';
-
-                                      if (filePath.endsWith('.pdf')) {
-                                        Get.toNamed(
-                                          AppRoutes.viewpdf,
-                                          arguments: url,
-                                        );
-                                      } else if (filePath.endsWith('.jpg') ||
-                                          filePath.endsWith('.png') ||
-                                          filePath.endsWith('.jpeg')) {
-                                        Get.toNamed(
-                                          AppRoutes.viewImage,
-                                          arguments: url,
-                                        );
-                                      } else {
-                                        // Get.snackbar(
-                                        //   'Error',
-                                        //   'Unsupported file format for Invoice Copy',
-                                        // );
-                                      }
-                                    } catch (e) {
-                                      //  Get.snackbar('Error', 'Failed to open Invoice Copy');
-                                    }
-                                  })
-                                : SizedBox.shrink(),
-                          ),
-                        ),
                       ],
                     ),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: Obx(
-                      () => ElevatedButton(
-                        onPressed: controller.isLoading.value
-                            ? null
-                            : () {
-                                _submitForm();
-                              },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 32,
-                            vertical: 12,
-                          ),
-                        ),
-                        child: controller.isLoading.value
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : const Text(
-                                'Submit',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                      ),
-                    ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
