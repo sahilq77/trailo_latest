@@ -10,8 +10,7 @@ import 'package:trailo/core/urls.dart';
 import 'package:trailo/utility/app_utility.dart';
 import 'package:trailo/utility/app_colors.dart';
 import 'package:trailo/utility/app_routes.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+
 
 import '../../../core/network/exceptions.dart';
 import '../inward_list_controller.dart';
@@ -24,105 +23,10 @@ class AddInwardController extends GetxController {
   var debitNoteCopyFile = Rxn<PlatformFile>();
   final controller = Get.put(InwardListController());
 
-  // Check and request storage permissions based on Android version
-  Future<bool> _requestStoragePermission() async {
-    log('Checking storage permissions');
-    bool granted = false;
 
-    if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      final sdkVersion = androidInfo.version.sdkInt;
-      log('Android SDK version: $sdkVersion');
-
-      if (sdkVersion >= 33) {
-        // Android 13+: Request granular permissions or MANAGE_EXTERNAL_STORAGE
-        var status = await Permission.photos.status;
-        if (!status.isGranted) {
-          log('Requesting photos permission');
-          status = await Permission.photos.request();
-        }
-        granted = status.isGranted;
-        log('Photos permission ${granted ? "granted" : "denied"}');
-
-        // For PDFs, we may need MANAGE_EXTERNAL_STORAGE
-        if (!granted) {
-          status = await Permission.manageExternalStorage.status;
-          if (!status.isGranted) {
-            log('Requesting MANAGE_EXTERNAL_STORAGE permission');
-            // MANAGE_EXTERNAL_STORAGE requires user to enable in settings
-            granted = await Permission.manageExternalStorage
-                .request()
-                .isGranted;
-            if (!granted) {
-              log('MANAGE_EXTERNAL_STORAGE denied, prompting system settings');
-              Get.snackbar(
-                'Permission Required',
-                'Please enable "All Files Access" in system settings to pick files.',
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: AppColors.error,
-                colorText: Colors.white,
-                mainButton: TextButton(
-                  onPressed: () {
-                    log('Opening system settings for MANAGE_EXTERNAL_STORAGE');
-                    openAppSettings();
-                  },
-                  child: Text(
-                    'Open Settings',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              );
-            } else {
-              log('MANAGE_EXTERNAL_STORAGE granted');
-              granted = true;
-            }
-          } else {
-            log('MANAGE_EXTERNAL_STORAGE already granted');
-            granted = true;
-          }
-        }
-      } else {
-        // Android 12 and below: Request storage permission
-        var status = await Permission.storage.status;
-        if (!status.isGranted) {
-          log('Requesting storage permission');
-          status = await Permission.storage.request();
-        }
-        granted = status.isGranted;
-        log('Storage permission ${granted ? "granted" : "denied"}');
-      }
-    } else if (Platform.isIOS) {
-      // iOS: Request photos permission
-      var status = await Permission.photos.status;
-      if (!status.isGranted) {
-        log('Requesting photos permission');
-        status = await Permission.photos.request();
-      }
-      granted = status.isGranted;
-      log('Photos permission ${granted ? "granted" : "denied"}');
-    }
-
-    if (!granted) {
-      log('All permissions denied');
-      Get.snackbar(
-        'Permission Denied',
-        'Storage access is required to pick files.',
-
-        backgroundColor: AppColors.error,
-        colorText: Colors.white,
-      );
-    }
-    return granted;
-  }
 
   Future<void> pickFile(String field) async {
     try {
-      // Request storage permission before picking files
-      if (!await _requestStoragePermission()) {
-        log('File picking aborted due to permission denial');
-        return;
-      }
-
       log('Picking file for field: $field');
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
