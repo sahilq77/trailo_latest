@@ -253,10 +253,11 @@ class _StockMovementFormState extends State<StockMovementForm> {
       appBar: AppBar(title: Text('Stock Movement')),
       body: Column(
         children: [
-          Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUnfocus,
-            child: Expanded(
+          Expanded(
+            child: Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUnfocus,
+
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: ListView(
