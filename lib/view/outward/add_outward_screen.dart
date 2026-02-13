@@ -272,13 +272,7 @@ class _AddOutwardScreenState extends State<AddOutwardScreen> {
         'invoice_copy_new': controller.invoiceCopyFile.value?.name ?? '',
         'outward_id': '',
       };
-      controller.submitOutwardData(context: context, data: data).then((
-        success,
-      ) {
-        if (success) {
-          _clearForm();
-        }
-      });
+      controller.submitOutwardData(context: context, data: data);
     }
   }
 
@@ -884,13 +878,28 @@ class _AddOutwardScreenState extends State<AddOutwardScreen> {
                   SizedBox(height: screenHeight * 0.01),
                   _buildFilePicker("Invoice Copy", "invoice_copy_new"),
                   SizedBox(height: screenHeight * 0.03),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _submitForm();
-                      },
-                      child: const Text('Submit'),
+                  Obx(
+                    () => SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: controller.isLoading.value
+                            ? null
+                            : () {
+                                _submitForm();
+                              },
+                        child: controller.isLoading.value
+                            ? SizedBox(
+                                height: 18,
+                                width: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
+                                ),
+                              )
+                            : Text('Submit'),
+                      ),
                     ),
                   ),
                 ],
