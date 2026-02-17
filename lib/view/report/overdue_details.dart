@@ -48,7 +48,9 @@ class _PendingOverdueDetailState extends State<PendingOverdueDetail> {
   }
 
   List<Widget> _buildDetailsList() {
-    if (AppUtility.userType == "3") {
+    if (AppUtility.userType == "1" ||
+        AppUtility.userType == "2" ||
+        AppUtility.userType == "3") {
       return [
         _buildDetailRow('Invoice Number', overdue!.invoiceNumberProcess),
         _buildDetailRow(
