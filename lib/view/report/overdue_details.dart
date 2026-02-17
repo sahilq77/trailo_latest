@@ -50,12 +50,21 @@ class _PendingOverdueDetailState extends State<PendingOverdueDetail> {
   List<Widget> _buildDetailsList() {
     if (AppUtility.userType == "3") {
       return [
+        _buildDetailRow('Division', overdue!.divisionName),
+        _buildDetailRow(
+          'Customer Name',
+          overdue!.customerName.isNotEmpty ? overdue!.customerName : "N/A",
+        ),
+        _buildDetailRow(
+          'Order Date',
+          DateFormater.formatDate(overdue!.orderDate.toString()),
+        ),
         _buildDetailRow('Invoice Number', overdue!.invoiceNumberProcess),
         _buildDetailRow(
           'Invoice Date',
           "${DateFormater.formatDate(overdue!.invoiceDateProcess.toString())}",
         ),
-        _buildDetailRow('Division', overdue!.divisionName),
+
         _buildDetailRow(
           'LR Date',
           "${DateFormater.formatDate(overdue!.LrDate.toString())}",
