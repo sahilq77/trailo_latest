@@ -435,9 +435,12 @@ class _PendingOverdueScreenState extends State<PendingOverdueScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildDetailRow('Sr. No.', '${index + 1}'),
+                          _buildDetailRow(
+                            'Invoice No.',
+                            '${outward.invoiceNumberProcess}',
+                          ),
                           const SizedBox(height: 6),
-                          _buildDetailRow('Company', outward.companyName),
+                          _buildDetailRow('Customer', outward.customerName),
                           const SizedBox(height: 6),
                           _buildDetailRow('Division', outward.divisionName),
                           const SizedBox(height: 6),
