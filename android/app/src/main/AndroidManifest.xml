@@ -8,7 +8,8 @@
         android:label="Magova"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
-        <property android:name="android.app.16kb_page_agnostic" android:value="true" />
+      <property android:name="android.app.16kb_page_agnostic" android:value="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
