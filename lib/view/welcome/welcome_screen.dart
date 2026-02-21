@@ -23,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             const Text(
-              'Welcome to Trailo',
+              'Welcome to Magova',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
